@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, X, ZoomIn } from "lucide-react";
 import { StoreBadges } from "./ui/StoreBadges.jsx";
-import { PhoneFrame, ImageScreen, MapScreen, EventsScreen, PointsScreen, PresenceScreen } from "./ui/PhoneMockup.jsx";
+import { PhoneFrame, ImageScreen } from "./ui/PhoneMockup.jsx";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -69,17 +69,39 @@ function RotatingFrame({ words, interval = 2800 }) {
 
 /* Retour client 10/08 : garder l'écran d'accueil et présenter en plus les
    fonctionnalités clés (carte + lieux, événements, Tchil Points) — chaque
-   écran est cliquable pour être agrandi. */
+   écran est cliquable pour être agrandi. Visuels = vraies maquettes de l'app
+   exportées du Figma (page Lot 10/08). */
 const SCREENS = [
-  { id: "evenements", label: "Les événements du soir", screen: <EventsScreen /> },
-  { id: "carte", label: "La carte et les lieux autour de vous", screen: <MapScreen /> },
+  {
+    id: "lieu",
+    label: "Les lieux et leurs événements",
+    src: "/screens/maquette-lieu.jpg",
+    alt: "Fiche d'un lieu partenaire Tchil avec ses événements",
+  },
+  {
+    id: "carte",
+    label: "La carte et les lieux autour de vous",
+    src: "/screens/maquette-carte.jpg",
+    alt: "Carte Tchil des lieux partenaires autour de vous",
+  },
   {
     id: "accueil",
     label: "L'écran d'accueil Tchil",
-    screen: <ImageScreen src="/screens/splash.jpg" alt="Écran de démarrage de l'application Tchil" />,
+    src: "/screens/splash.jpg",
+    alt: "Écran de démarrage de l'application Tchil",
   },
-  { id: "points", label: "Tchil Points et récompenses", screen: <PointsScreen /> },
-  { id: "presents", label: "Qui est là, en temps réel", screen: <PresenceScreen /> },
+  {
+    id: "points",
+    label: "Tchil Points : des récompenses à débloquer",
+    src: "/screens/maquette-points.jpg",
+    alt: "Récompense débloquée grâce aux Tchil Points",
+  },
+  {
+    id: "presents",
+    label: "Qui est là, en temps réel",
+    src: "/screens/maquette-presents.jpg",
+    alt: "Liste des personnes présentes dans un lieu Tchil",
+  },
 ];
 
 /** Éventail d'écrans de l'app, coupé par le bas du hero — clic pour agrandir. */
@@ -112,7 +134,7 @@ function PhoneFan({ onOpen }) {
                       : "border-noir/90 shadow-[0_30px_80px_rgba(4,18,28,0.45)]"
                   }
                 >
-                  {s.screen}
+                  <ImageScreen src={s.src} alt={s.alt} />
                 </PhoneFrame>
                 <span className="pointer-events-none absolute right-3 top-10 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-noir/70 text-blanc opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
                   <ZoomIn className="h-4 w-4" />
@@ -167,7 +189,11 @@ function ScreenLightbox({ index, onClose }) {
             onClick={(e) => e.stopPropagation()}
           >
             <PhoneFrame className="shadow-[0_60px_160px_rgba(0,0,0,0.6)]">
-              {SCREENS[index].screen}
+              {/* écran scrollable dans le cadre : les maquettes longues
+                  (fiche lieu…) se parcourent comme dans l'app */}
+              <div className="absolute inset-0 z-20 overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <img src={SCREENS[index].src} alt={SCREENS[index].alt} className="w-full" />
+              </div>
             </PhoneFrame>
           </motion.div>
           <p className="mt-6 text-center text-sm font-semibold text-blanc/85">{SCREENS[index].label}</p>
