@@ -1,6 +1,7 @@
 import { ArrowRight, Check, Infinity as InfinityIcon } from "lucide-react";
 import { SectionTitle } from "./ui/SectionTitle.jsx";
 import { Reveal, StaggerGroup, StaggerItem } from "./ui/Reveal.jsx";
+import { BrowserFrame } from "./ui/PhoneMockup.jsx";
 
 const PLANS = [
   {
@@ -162,22 +163,57 @@ export function Pricing() {
           </p>
         </Reveal>
 
-        {/* Bandeau pro — thème clair uni (le client ne veut pas de dégradé foncé) */}
+        {/* Bandeau pro — vraie vitrine : copy + CTA à gauche, dashboard pro qui
+            déborde du cadre à droite, halo bleu et décor en fond */}
         <Reveal className="mt-14">
-          <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-noir/10 bg-white p-8 text-center shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:flex-row md:p-10 md:text-left">
-            <div className="flex items-start gap-4">
-              <img src="/logos/icone-bleu.svg" alt="" className="hidden h-10 w-10 md:block" />
-              <p className="max-w-xl text-base font-medium leading-relaxed text-noir md:text-lg">
-                Vous gérez un bar, un café, un restaurant à Paris ou en banlieue ?{" "}
-                <span className="font-semibold text-tchil">Profitez de l'offre de lancement partenaire.</span>
-              </p>
+          <div className="gradient-noir-bleu relative overflow-hidden rounded-3xl">
+            {/* halo bleu doux derrière le mockup */}
+            <div
+              className="pointer-events-none absolute -right-20 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-tchil/40 blur-[110px]"
+              aria-hidden="true"
+            />
+            {/* icône Tchil géante en filigrane à gauche */}
+            <img
+              src="/logos/icone-white.svg"
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute -bottom-10 -left-10 h-48 w-48 opacity-[0.06]"
+            />
+
+            <div className="relative grid items-center gap-10 p-8 md:grid-cols-[1.1fr_1fr] md:gap-6 md:p-12">
+              <div className="text-center md:text-left">
+                <span className="font-asap inline-block rounded-full border border-blanc/25 bg-blanc/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-blanc backdrop-blur-sm">
+                  Offre de lancement
+                </span>
+                <h3 className="font-asap mt-5 text-2xl font-extrabold leading-tight tracking-tight text-blanc text-balance md:text-4xl">
+                  Vous gérez un bar, un café, un restaurant ?
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-blanc/70 md:text-base">
+                  À Paris ou en banlieue, rejoignez les premiers lieux partenaires et transformez
+                  chaque check-in en client fidèle.
+                </p>
+                <a
+                  href="#cta"
+                  className="group mt-7 inline-flex items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir shadow-[0_14px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-[1.03]"
+                >
+                  Demander une invitation
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-noir text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                </a>
+              </div>
+
+              {/* dashboard pro coupé par le bord droit du cadre, façon mockups du site */}
+              <div className="relative hidden md:block">
+                <div className="w-[130%] rotate-2 transition-transform duration-500 hover:rotate-0">
+                  <BrowserFrame
+                    src="/screens/pro-dashboard.jpg"
+                    alt="Tableau de bord de l'espace pro Tchil"
+                    className="border-blanc/10 shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
+                  />
+                </div>
+              </div>
             </div>
-            <a
-              href="#cta"
-              className="shrink-0 rounded-full bg-tchil px-7 py-3.5 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:bg-noir"
-            >
-              Demander une invitation
-            </a>
           </div>
         </Reveal>
       </div>
