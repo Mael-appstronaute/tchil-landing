@@ -159,9 +159,9 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
           className="mx-auto mt-8 max-w-3xl text-base leading-relaxed text-blanc/85 md:text-lg"
         >
-          Les applis de rencontre ont créé des matchs. Tchil crée des souvenirs :
-          <br className="hidden md:block" /> un lieu, un moment, une personne en face de vous.
-          <br className="hidden md:block" /> Un scan, une rencontre — sans swipe, sans profils fantômes.
+          Tchil connecte les personnes présentes au même endroit, au même moment.
+          <br className="hidden md:block" /> Un scan, une rencontre, des souvenirs — sans swipe,
+          sans profils fantômes.
         </motion.p>
 
         <motion.div
@@ -180,7 +180,7 @@ export function Hero() {
             </span>
           </a>
           <a
-            href="#fonctionnalites"
+            href="#concept"
             className="group flex items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir shadow-[0_14px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-[1.03]"
           >
             Comment ça marche ?

@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, EyeOff, ShieldCheck, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -251,7 +251,7 @@ export function Features() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="fonctionnalites" className="relative px-5 py-24 md:py-32">
+    <section id="fonctionnalites" className="relative px-5 pb-24 pt-8 md:pb-32">
       {/* grande tache bleue floutée au centre, derrière les cartes */}
       <div
         className="pointer-events-none absolute left-1/2 top-1/2 h-[900px] w-[1100px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-tchil/45 blur-[150px]"
@@ -319,45 +319,6 @@ export function Features() {
           >
             <NotifStackVisual />
           </RocinyCard>
-        </div>
-
-        {/* Avantages clés de l'app (contenu rapatrié de l'ancienne section
-            Établissements, recentrée sur les utilisateurs) */}
-        <div className="mt-14 grid gap-8 md:grid-cols-3">
-          {[
-            {
-              Icon: Users,
-              title: "Des rencontres sans pression",
-              text: "Pas de swipe, pas de matching : un scan sur place, et vous découvrez qui est là, ouvert à la discussion comme vous.",
-            },
-            {
-              Icon: EyeOff,
-              title: "Votre visibilité, vos règles",
-              text: "Visible ou invisible en un geste. Votre position n'est jamais suivie : elle n'est vérifiée qu'au moment du scan.",
-            },
-            {
-              Icon: ShieldCheck,
-              title: "Un badge de confiance",
-              text: "Vérifiez votre profil par selfie et affichez un badge qui rassure. Réservé aux 18 ans et plus.",
-            },
-          ].map((p, i) => (
-            <motion.div
-              key={p.title}
-              initial={reduce ? false : { opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ delay: i * 0.08, duration: 0.6, ease: EASE }}
-              className="flex gap-4"
-            >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-noir/10 bg-white shadow-[0_6px_20px_rgba(23,53,75,0.1)]">
-                <p.Icon className="h-5 w-5 text-tchil" strokeWidth={1.5} />
-              </span>
-              <span>
-                <span className="font-asap block text-lg font-bold text-noir">{p.title}</span>
-                <span className="mt-1 block text-sm leading-relaxed text-noir/55">{p.text}</span>
-              </span>
-            </motion.div>
-          ))}
         </div>
       </div>
     </section>
