@@ -162,19 +162,19 @@ export function Pricing() {
           </p>
         </Reveal>
 
-        {/* Bandeau pro */}
+        {/* Bandeau pro — thème clair uni (le client ne veut pas de dégradé foncé) */}
         <Reveal className="mt-14">
-          <div className="gradient-noir-bleu flex flex-col items-center justify-between gap-6 rounded-3xl p-8 text-center md:flex-row md:p-10 md:text-left">
+          <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-noir/10 bg-white p-8 text-center shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:flex-row md:p-10 md:text-left">
             <div className="flex items-start gap-4">
-              <img src="/logos/icone-white.svg" alt="" className="hidden h-10 w-10 md:block" />
-              <p className="max-w-xl text-base font-medium leading-relaxed text-blanc md:text-lg">
+              <img src="/logos/icone-bleu.svg" alt="" className="hidden h-10 w-10 md:block" />
+              <p className="max-w-xl text-base font-medium leading-relaxed text-noir md:text-lg">
                 Vous gérez un bar, un café, un restaurant à Paris ou en banlieue ?{" "}
-                <span className="font-semibold">Profitez de l'offre de lancement partenaire.</span>
+                <span className="font-semibold text-tchil">Profitez de l'offre de lancement partenaire.</span>
               </p>
             </div>
             <a
               href="#cta"
-              className="shrink-0 rounded-full bg-blanc px-7 py-3.5 text-sm font-semibold text-noir transition-all duration-200 hover:scale-[1.03] hover:bg-tchil hover:text-blanc"
+              className="shrink-0 rounded-full bg-tchil px-7 py-3.5 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:bg-noir"
             >
               Demander une invitation
             </a>
