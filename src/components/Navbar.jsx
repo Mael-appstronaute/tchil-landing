@@ -5,12 +5,14 @@ import { Menu, X } from "lucide-react";
 const LINKS = [
   { label: "Le concept", href: "#concept" },
   { label: "Fonctionnalités", href: "#fonctionnalites" },
-  { label: "Tarifs", href: "#tarifs" },
+  { label: "Gratuit", href: "#gratuit" },
 ];
 
-/** Header transparent façon Rociny : aucun fond, posé sur le hero, il défile avec la page. */
+/** Header fixe (retour client 10/08) : transparent sur le hero, fond bleu nuit
+    flouté dès que la page défile pour rester lisible sur les sections claires. */
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -19,8 +21,21 @@ export function Navbar() {
     };
   }, [open]);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="absolute inset-x-0 top-0 z-50">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#04121c]/85 shadow-[0_10px_40px_rgba(4,18,28,0.35)] backdrop-blur-md"
+          : "bg-transparent"
+      }`}
+    >
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:px-8">
         <a href="#" aria-label="Tchil — accueil">
           <img src="/logos/principal-white.svg" alt="Tchil.app" className="h-10 w-auto md:h-11" />

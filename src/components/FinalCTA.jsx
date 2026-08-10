@@ -4,8 +4,30 @@ import { PhoneFrame, ImageScreen } from "./ui/PhoneMockup.jsx";
 
 export function FinalCTA() {
   return (
-    <section id="cta" className="gradient-noir-bleu relative overflow-hidden px-5 pt-24 md:pt-32">
-      <div className="mx-auto flex max-w-5xl flex-col items-center text-center">
+    <section id="cta" className="relative overflow-hidden px-5 pt-24 md:pt-32">
+      {/* Retour client 10/08 : reprendre le même bleu que le haut de page —
+          fond répliqué du hero (base #0e5c87, halos doux, fondus vers le bleu nuit) */}
+      <div className="absolute inset-0 bg-[#0e5c87]" aria-hidden="true" />
+      <div
+        className="absolute left-1/2 top-[35%] h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-[0.05] blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute left-1/2 top-[35%] h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#aadcff] opacity-[0.1] blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-x-0 top-0 h-48"
+        aria-hidden="true"
+        style={{ background: "linear-gradient(180deg, #04121c 4%, rgba(4,18,28,0) 100%)" }}
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 h-48"
+        aria-hidden="true"
+        style={{ background: "linear-gradient(0deg, #04121c 4%, rgba(4,18,28,0) 100%)" }}
+      />
+
+      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center text-center">
         <Reveal>
           <img src="/logos/secondaire-white.svg" alt="Tchil.app" className="mx-auto h-24 w-auto md:h-32" />
         </Reveal>
@@ -27,7 +49,9 @@ export function FinalCTA() {
           <StoreBadges variant="light" />
         </Reveal>
 
-        {/* Trio d'écrans réels de l'app, en éventail, qui dépasse du bas du cadre */}
+        {/* Trio d'écrans réels de l'app, en éventail, qui dépasse du bas du cadre.
+            NB retour client 10/08 : ces captures proviennent des maquettes app —
+            à ré-exporter une fois les maquettes mises à jour (thème bleu clair). */}
         <div className="-mb-[14%] mt-16 flex items-start justify-center md:-mb-[12%]">
           <Reveal delay={0.5} className="z-0 hidden w-44 sm:block md:w-56">
             <div className="-mr-8 mt-14 -rotate-[9deg] md:-mr-10">

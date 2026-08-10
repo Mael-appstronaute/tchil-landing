@@ -1,4 +1,4 @@
-import { MapPin, QrCode, Wifi, BatteryFull, SignalHigh, Coffee, BadgeCheck } from "lucide-react";
+import { MapPin, QrCode, Wifi, BatteryFull, SignalHigh, Coffee, BadgeCheck, CalendarDays } from "lucide-react";
 import { CountUp } from "./CountUp.jsx";
 
 /** Cadre téléphone générique — mockups 100 % HTML/CSS, aucune image externe. */
@@ -192,7 +192,45 @@ export function PointsScreen() {
           </span>
           <span className="font-asap text-[11px] font-extrabold text-tchil">20 pts</span>
         </div>
-        <button className="mt-2 w-full rounded-xl bg-noir py-2 text-[9px] font-bold text-blanc">Échanger</button>
+        <span className="mt-2 block w-full rounded-xl bg-noir py-2 text-center text-[9px] font-bold text-blanc">Échanger</span>
+      </div>
+    </div>
+  );
+}
+
+const EVENTS = [
+  { emoji: "🎷", name: "Soirée jazz", place: "Café Lumière · 21h", tag: "+20 pts" },
+  { emoji: "🎧", name: "DJ set du vendredi", place: "Le Comptoir · 22h", tag: "Gratuit" },
+  { emoji: "🍹", name: "Happy hour", place: "La Terrasse · 18h – 20h", tag: "−50 %" },
+  { emoji: "🎤", name: "Open mic", place: "Chez Marcel · 20h30", tag: "+15 pts" },
+];
+
+/** Écran événements : ce qui se passe ce soir dans les lieux partenaires. */
+export function EventsScreen() {
+  return (
+    <div className="absolute inset-0 flex flex-col pt-8">
+      <div className="px-4 pb-2">
+        <p className="font-asap flex items-center gap-1.5 text-sm font-bold text-noir">
+          <CalendarDays className="h-3.5 w-3.5 text-tchil" /> Ce soir
+        </p>
+        <p className="text-[9px] text-noir/50">4 événements autour de vous</p>
+      </div>
+      <div className="space-y-2 px-4">
+        {EVENTS.map((e) => (
+          <div key={e.name} className="flex items-center gap-2.5 rounded-2xl border border-noir/5 bg-white p-2.5 shadow-sm">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-tchil/15 text-sm">
+              {e.emoji}
+            </span>
+            <span className="flex-1">
+              <span className="block text-[11px] font-semibold text-noir">{e.name}</span>
+              <span className="block text-[8px] text-noir/50">{e.place}</span>
+            </span>
+            <span className="whitespace-nowrap rounded-full bg-tchil px-2 py-1 text-[8px] font-bold text-blanc">{e.tag}</span>
+          </div>
+        ))}
+      </div>
+      <div className="mx-4 mt-3 flex items-center gap-1.5 rounded-xl bg-noir px-3 py-2 text-[9px] font-semibold text-blanc">
+        <MapPin className="h-3 w-3 text-tchil" /> Voir sur la carte
       </div>
     </div>
   );

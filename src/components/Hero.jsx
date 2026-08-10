@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, X, ZoomIn } from "lucide-react";
 import { StoreBadges } from "./ui/StoreBadges.jsx";
+import { PhoneFrame, ImageScreen, MapScreen, EventsScreen, PointsScreen, PresenceScreen } from "./ui/PhoneMockup.jsx";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -66,25 +67,119 @@ function RotatingFrame({ words, interval = 2800 }) {
   );
 }
 
-/** Mockup téléphone façon Rociny : splash screen de l'app, coupé par le bas du hero. */
-function PhoneSplash() {
+/* Retour client 10/08 : garder l'écran d'accueil et présenter en plus les
+   fonctionnalités clés (carte + lieux, événements, Tchil Points) — chaque
+   écran est cliquable pour être agrandi. */
+const SCREENS = [
+  { id: "evenements", label: "Les événements du soir", screen: <EventsScreen /> },
+  { id: "carte", label: "La carte et les lieux autour de vous", screen: <MapScreen /> },
+  {
+    id: "accueil",
+    label: "L'écran d'accueil Tchil",
+    screen: <ImageScreen src="/screens/splash.jpg" alt="Écran de démarrage de l'application Tchil" />,
+  },
+  { id: "points", label: "Tchil Points et récompenses", screen: <PointsScreen /> },
+  { id: "presents", label: "Qui est là, en temps réel", screen: <PresenceScreen /> },
+];
+
+/** Éventail d'écrans de l'app, coupé par le bas du hero — clic pour agrandir. */
+function PhoneFan({ onOpen }) {
+  const side = "hidden w-40 sm:block md:w-52";
+  const tilt = [
+    "-mr-9 mt-24 -rotate-[13deg] md:-mr-12",
+    "-mr-7 mt-10 -rotate-[6deg] md:-mr-9",
+    "",
+    "-ml-7 mt-10 rotate-[6deg] md:-ml-9",
+    "-ml-9 mt-24 rotate-[13deg] md:-ml-12",
+  ];
   return (
-    <div className="relative mx-auto w-64 md:w-80">
-      <div className="overflow-hidden rounded-[3rem] border-[7px] border-noir bg-noir shadow-[0_40px_120px_rgba(4,18,28,0.55)]">
-        <div className="relative overflow-hidden rounded-[2.55rem]">
-          <img src="/screens/splash.jpg" alt="Écran de démarrage de l'application Tchil" className="w-full" />
-          <span
-            className="absolute left-1/2 top-2.5 h-6 w-24 -translate-x-1/2 rounded-full bg-noir"
-            aria-hidden="true"
-          />
-        </div>
-      </div>
+    <div className="flex items-start justify-center">
+      {SCREENS.map((s, i) => {
+        const center = i === 2;
+        return (
+          <div key={s.id} className={center ? "z-10 w-56 md:w-72" : `${side} ${i < 2 ? "z-0" : "z-0"}`}>
+            <div className={tilt[i]}>
+              <button
+                type="button"
+                onClick={() => onOpen(i)}
+                aria-label={`Agrandir : ${s.label}`}
+                className="group relative block w-full cursor-zoom-in transition-transform duration-300 hover:-translate-y-2"
+              >
+                <PhoneFrame
+                  className={
+                    center
+                      ? "border-noir shadow-[0_40px_120px_rgba(4,18,28,0.55)]"
+                      : "border-noir/90 shadow-[0_30px_80px_rgba(4,18,28,0.45)]"
+                  }
+                >
+                  {s.screen}
+                </PhoneFrame>
+                <span className="pointer-events-none absolute right-3 top-10 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-noir/70 text-blanc opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
+                  <ZoomIn className="h-4 w-4" />
+                </span>
+              </button>
+            </div>
+          </div>
+        );
+      })}
     </div>
+  );
+}
+
+/** Lightbox : écran agrandi dans un cadre téléphone, fermeture clic / Échap. */
+function ScreenLightbox({ index, onClose }) {
+  useEffect(() => {
+    if (index === null) return;
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [index, onClose]);
+
+  return (
+    <AnimatePresence>
+      {index !== null && (
+        <motion.div
+          className="fixed inset-0 z-[80] flex flex-col items-center justify-center bg-[#04121c]/90 px-5 backdrop-blur-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          onClick={onClose}
+        >
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Fermer l'aperçu"
+            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-blanc/25 text-blanc transition-colors hover:border-blanc"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <motion.div
+            className="w-64 md:w-80"
+            initial={{ opacity: 0, y: 40, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.92 }}
+            transition={{ type: "spring", bounce: 0.22, duration: 0.5 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <PhoneFrame className="shadow-[0_60px_160px_rgba(0,0,0,0.6)]">
+              {SCREENS[index].screen}
+            </PhoneFrame>
+          </motion.div>
+          <p className="mt-6 text-center text-sm font-semibold text-blanc/85">{SCREENS[index].label}</p>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
 export function Hero() {
   const reduce = useReducedMotion();
+  const [zoom, setZoom] = useState(null);
 
   return (
     <section className="relative overflow-hidden px-5 pt-32 md:pt-40">
@@ -200,19 +295,21 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Mockup téléphone qui monte du bas du hero, coupé par le pli —
+      {/* Éventail d'écrans qui monte du bas du hero, coupé par le pli —
           apparition au chargement (ressort + montée) */}
       <motion.div
-        className="relative z-10 -mb-[26%] mt-16 md:-mb-[13%] md:mt-20"
+        className="relative z-10 -mb-[24%] mt-16 md:-mb-[11%] md:mt-20"
         initial={reduce ? false : { opacity: 0, y: 140, scale: 0.94 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ delay: 0.55, duration: 1, type: "spring", bounce: 0.25 }}
       >
         {/* Retour client #68 : flottement continu pour rendre le hero plus vivant */}
         <div className="animate-float" style={{ animationDuration: "6s" }}>
-          <PhoneSplash />
+          <PhoneFan onOpen={setZoom} />
         </div>
       </motion.div>
+
+      <ScreenLightbox index={zoom} onClose={() => setZoom(null)} />
     </section>
   );
 }

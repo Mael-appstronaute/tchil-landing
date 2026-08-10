@@ -1,10 +1,42 @@
-import { Facebook, Instagram, Mail, Globe } from "lucide-react";
+import { Mail, Globe } from "lucide-react";
 
 const NAV = [
   { label: "Le concept", href: "#concept" },
   { label: "Fonctionnalités", href: "#fonctionnalites" },
-  { label: "Tarifs", href: "#tarifs" },
+  { label: "Gratuit", href: "#gratuit" },
 ];
+
+/* Retour client 10/08 : icônes réseaux sociaux dans leurs couleurs officielles. */
+function InstagramColorIcon({ className = "h-4 w-4" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <defs>
+        <radialGradient id="ig-grad" cx="30%" cy="107%" r="150%">
+          <stop offset="0%" stopColor="#fdf497" />
+          <stop offset="5%" stopColor="#fdf497" />
+          <stop offset="45%" stopColor="#fd5949" />
+          <stop offset="60%" stopColor="#d6249f" />
+          <stop offset="90%" stopColor="#285AEB" />
+        </radialGradient>
+      </defs>
+      <rect x="2" y="2" width="20" height="20" rx="6" fill="url(#ig-grad)" />
+      <circle cx="12" cy="12" r="4.2" fill="none" stroke="#fff" strokeWidth="1.7" />
+      <circle cx="17.2" cy="6.8" r="1.25" fill="#fff" />
+    </svg>
+  );
+}
+
+function FacebookColorIcon({ className = "h-4 w-4" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <circle cx="12" cy="12" r="10" fill="#1877F2" />
+      <path
+        d="M15.6 12.5h-2.4v7h-2.9v-7H8.6V9.9h1.7V8.4c0-2 1.2-3.1 3-3.1.9 0 1.8.16 1.8.16v2h-1c-1 0-1.3.62-1.3 1.26v1.24h2.3l-.5 2.6Z"
+        fill="#fff"
+      />
+    </svg>
+  );
+}
 
 const LEGAL = ["CGU", "Confidentialité", "Mentions légales", "CGV", "Suppression du compte"];
 
@@ -68,7 +100,7 @@ export function Footer() {
               rel="noreferrer"
               className="flex w-fit items-center gap-2 rounded-full border border-blanc/20 px-4 py-2 text-xs font-semibold text-blanc/80 transition-all duration-200 hover:border-tchil hover:text-tchil"
             >
-              <Instagram className="h-3.5 w-3.5" strokeWidth={1.75} /> Suivre sur Instagram
+              <InstagramColorIcon className="h-4 w-4" /> Suivre sur Instagram
             </a>
             <a
               href="https://www.facebook.com/tchilapp"
@@ -76,7 +108,7 @@ export function Footer() {
               rel="noreferrer"
               className="flex w-fit items-center gap-2 rounded-full border border-blanc/20 px-4 py-2 text-xs font-semibold text-blanc/80 transition-all duration-200 hover:border-tchil hover:text-tchil"
             >
-              <Facebook className="h-3.5 w-3.5" strokeWidth={1.75} /> Suivre sur Facebook
+              <FacebookColorIcon className="h-4 w-4" /> Suivre sur Facebook
             </a>
           </div>
         </div>

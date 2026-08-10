@@ -25,7 +25,7 @@ export default function App() {
       window.scrollTo(0, 0);
       return;
     }
-    // au retour de l'Espace Pro, honorer une éventuelle ancre (#tarifs, #cta…)
+    // au retour de l'Espace Pro, honorer une éventuelle ancre (#gratuit, #cta…)
     const anchor = /^#[a-z]/.test(hash) ? document.getElementById(hash.slice(1)) : null;
     if (anchor) anchor.scrollIntoView();
     else window.scrollTo(0, 0);

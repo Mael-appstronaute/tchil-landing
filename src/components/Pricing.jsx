@@ -1,165 +1,87 @@
-import { ArrowRight, Check, Infinity as InfinityIcon } from "lucide-react";
+import { ArrowRight, Check, Infinity as InfinityIcon, Sparkles } from "lucide-react";
 import { SectionTitle } from "./ui/SectionTitle.jsx";
-import { Reveal, StaggerGroup, StaggerItem } from "./ui/Reveal.jsx";
+import { Reveal } from "./ui/Reveal.jsx";
 import { BrowserFrame } from "./ui/PhoneMockup.jsx";
+import { StoreBadges } from "./ui/StoreBadges.jsx";
 
-const PLANS = [
-  {
-    name: "Gratuit",
-    price: "0 €",
-    period: "",
-    free: true,
-    tagline: "L'essentiel, sans carte bancaire.",
-    features: [
-      "Carte des lieux partenaires",
-      "Check-in illimité*",
-      "Voir qui est là sur place",
-      "Interactions sur place",
-      "Tchil Points & parrainage",
-    ],
-    note: "*3 lieux par jour",
-    cta: "Commencer",
-  },
-  {
-    name: "Premium",
-    price: "4,99 €",
-    period: "/mois",
-    tagline: "Voyez qui est là avant de sortir.",
-    includes: "Tout le Gratuit, plus :",
-    features: ["Voir qui est là à distance", "Invitations à distance", "Messages prédéfinis"],
-    cta: "Choisir Premium",
-  },
-  {
-    name: "Premium+",
-    price: "9,99 €",
-    period: "/mois",
-    popular: true,
-    tagline: "Engagez la conversation.",
-    includes: "Tout Premium, plus :",
-    features: ["Conversations réelles avec les personnes présentes", "Badge vérifié mis en avant"],
-    cta: "Choisir Premium+",
-  },
-  {
-    name: "Full",
-    price: "14,99 €",
-    period: "/mois",
-    tagline: "Zéro plafond, zéro friction.",
-    includes: "Tout Premium+, plus :",
-    features: ["Liberté maximale", "Sans plafond", "Protections anti-spam actives"],
-    cta: "Choisir Full",
-  },
+/* Retour client 10/08 : ne plus afficher les formules ni les prix sur le site.
+   On met en avant la gratuité de l'app, avec des options d'achat à découvrir
+   directement dans l'application. */
+const FREE_FEATURES = [
+  "Carte des lieux partenaires",
+  "Check-in par scan sur place",
+  "Voir qui est là autour de vous",
+  "Rencontres et interactions sur place",
+  "Tchil Points, récompenses & parrainage",
 ];
 
 export function Pricing() {
   return (
-    <section id="tarifs" className="bg-blanc px-5 py-24 md:py-32">
+    <section id="gratuit" className="bg-blanc px-5 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionTitle
-          title="Commencez gratuitement."
-          subtitle="L'essentiel de Tchil est gratuit, pour toujours. Les abonnements élargissent simplement votre liberté."
+          title="Application gratuite, avec options d'achat."
+          subtitle="Tchil se télécharge et s'utilise gratuitement. Des options dans l'app élargissent simplement votre liberté."
         />
 
-        <StaggerGroup className="grid items-stretch gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {PLANS.map((p) => (
-            <StaggerItem key={p.name} className="h-full">
-              <article
-                className={`relative flex h-full flex-col overflow-hidden rounded-3xl p-7 transition-all duration-300 hover:-translate-y-1.5 ${
-                  p.free
-                    ? "bg-noir text-blanc shadow-[0_20px_60px_rgba(0,0,0,0.25)] hover:shadow-[0_28px_70px_rgba(110,170,204,0.35)]"
-                    : `bg-white hover:shadow-[0_20px_60px_rgba(110,170,204,0.22)] ${
-                        p.popular ? "border-2 border-tchil" : "border border-noir/10"
-                      }`
-                }`}
-              >
-                {p.free && (
-                  <div
-                    className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-tchil/35 blur-[80px]"
-                    aria-hidden="true"
-                  />
-                )}
-                {p.popular && (
-                  <span className="font-asap absolute right-5 top-5 rounded-full bg-tchil px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-blanc">
-                    Populaire
-                  </span>
-                )}
-                {p.free && (
-                  <span className="flex w-fit items-center gap-1.5 rounded-full border border-tchil/50 bg-tchil/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-tchil">
-                    <InfinityIcon className="h-3 w-3" strokeWidth={2.5} />
-                    Pour toujours
-                  </span>
-                )}
-
-                <h3
-                  className={`font-asap ${p.free ? "mt-5" : ""} text-xs font-bold uppercase tracking-[0.18em] ${
-                    p.free ? "text-blanc/60" : "text-noir/50"
-                  }`}
-                >
-                  {p.name}
+        <Reveal>
+          <div className="relative overflow-hidden rounded-3xl bg-noir text-blanc shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+            <div
+              className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-tchil/35 blur-[90px]"
+              aria-hidden="true"
+            />
+            <div className="relative grid gap-10 p-8 md:grid-cols-2 md:gap-6 md:p-12">
+              <div>
+                <span className="flex w-fit items-center gap-1.5 rounded-full border border-tchil/50 bg-tchil/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-tchil">
+                  <InfinityIcon className="h-3 w-3" strokeWidth={2.5} />
+                  Gratuit, pour toujours
+                </span>
+                <h3 className="font-asap mt-5 text-2xl font-extrabold leading-tight tracking-tight text-balance md:text-4xl">
+                  L'essentiel de Tchil, sans carte bancaire.
                 </h3>
-                <p className="mt-2 flex items-baseline gap-1">
-                  <span
-                    className={`font-asap text-[2.6rem] font-extrabold leading-none tracking-tight ${
-                      p.free ? "text-blanc" : "text-noir"
-                    }`}
-                  >
-                    {p.price}
-                  </span>
-                  {p.period && <span className="text-sm font-medium text-noir/50">{p.period}</span>}
-                </p>
-                <p className={`mt-2.5 text-[13px] font-medium ${p.free ? "text-blanc/60" : "text-tchil"}`}>
-                  {p.tagline}
-                </p>
-
-                <div className={`my-5 h-px w-full ${p.free ? "bg-blanc/15" : "bg-noir/10"}`} />
-
-                {p.includes && (
-                  <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-noir/40">
-                    {p.includes}
-                  </p>
-                )}
-                <ul className="flex-1 space-y-3">
-                  {p.features.map((f) => (
-                    <li
-                      key={f}
-                      className={`flex items-start gap-2.5 text-sm ${p.free ? "text-blanc/85" : "text-noir/70"}`}
-                    >
-                      <span
-                        className={`mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full ${
-                          p.free ? "bg-tchil" : "bg-tchil/15"
-                        }`}
-                      >
-                        <Check
-                          className={`h-2.5 w-2.5 ${p.free ? "text-noir" : "text-tchil"}`}
-                          strokeWidth={3}
-                        />
+                <ul className="mt-6 space-y-3">
+                  {FREE_FEATURES.map((f) => (
+                    <li key={f} className="flex items-start gap-2.5 text-sm text-blanc/85">
+                      <span className="mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full bg-tchil">
+                        <Check className="h-2.5 w-2.5 text-noir" strokeWidth={3} />
                       </span>
                       {f}
                     </li>
                   ))}
                 </ul>
-                {p.note && <p className="mt-3 text-[11px] text-blanc/35">{p.note}</p>}
+              </div>
 
+              <div className="flex flex-col justify-center rounded-2xl border border-blanc/10 bg-blanc/5 p-6 text-center md:p-8">
+                <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-tchil text-blanc">
+                  <Sparkles className="h-5 w-5" />
+                </span>
+                <p className="font-asap mt-4 text-lg font-extrabold tracking-tight md:text-xl">
+                  Envie d'aller plus loin ?
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-blanc/70">
+                  Des options d'achat sont disponibles directement dans l'application.
+                  Téléchargez Tchil pour les découvrir.
+                </p>
                 <a
                   href="#cta"
-                  className={`mt-6 flex items-center justify-center gap-2 rounded-full py-3 text-center text-sm font-semibold transition-all duration-200 hover:scale-[1.03] ${
-                    p.free
-                      ? "bg-blanc text-noir hover:bg-tchil hover:text-blanc"
-                      : p.popular
-                        ? "bg-noir text-blanc hover:gradient-noir-bleu"
-                        : "border border-noir/15 text-noir hover:border-tchil hover:text-tchil"
-                  }`}
+                  className="group mx-auto mt-6 inline-flex items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir transition-all duration-200 hover:scale-[1.03]"
                 >
-                  {p.cta}
-                  {p.free && <ArrowRight className="h-4 w-4" />}
+                  Télécharger Tchil gratuitement
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-noir text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
                 </a>
-              </article>
-            </StaggerItem>
-          ))}
-        </StaggerGroup>
+                <div className="mt-5 flex justify-center">
+                  <StoreBadges variant="light" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Reveal>
 
         <Reveal className="mt-6">
           <p className="text-center text-xs text-noir/40">
-            Abonnements sans engagement, gérés via l'App Store et Google Play.
+            Options gérées via l'App Store et Google Play, sans engagement.
           </p>
         </Reveal>
 
