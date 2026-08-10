@@ -11,7 +11,7 @@ export function FinalCTA() {
         </Reveal>
         <Reveal delay={0.1}>
           <h2 className="font-asap mt-8 text-4xl font-extrabold tracking-tight text-blanc text-balance md:text-7xl">
-            La rencontre commence ici.
+            Plus qu'une application, une présence.
           </h2>
         </Reveal>
         <Reveal delay={0.2}>
