@@ -88,32 +88,10 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden px-5 pt-32 md:pt-40">
-      {/* Fond répliqué du hero rociny.com (base pleine + grille + fondus de bords + halos centraux),
-          transposé du vert Rociny #067d63 au bleu Tchil profond */}
+      {/* Fond répliqué du hero rociny.com (base pleine + fondus de bords + halos centraux),
+          transposé du vert Rociny #067d63 au bleu Tchil profond.
+          Retour client #74 : la grille de traits blancs a été retirée pour alléger le visuel. */}
       <div className="absolute inset-0 bg-[#0e5c87]" aria-hidden="true" />
-      {/* Grille façon rociny.com : carrés complets uniquement dans la bande centrale
-          (verticales limitées à ~1010px), horizontales pleine largeur qui filent vers
-          les côtés en s'estompant */}
-      <div
-        className="absolute inset-0"
-        aria-hidden="true"
-        style={{
-          backgroundImage: "linear-gradient(180deg, rgba(253,253,253,0.09) 1px, transparent 1px)",
-          backgroundSize: "100% 112px",
-          WebkitMaskImage:
-            "linear-gradient(90deg, rgba(0,0,0,0.25) 0%, #000 30%, #000 70%, rgba(0,0,0,0.25) 100%)",
-          maskImage:
-            "linear-gradient(90deg, rgba(0,0,0,0.25) 0%, #000 30%, #000 70%, rgba(0,0,0,0.25) 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-y-0 left-1/2 w-[1010px] max-w-full -translate-x-1/2"
-        aria-hidden="true"
-        style={{
-          backgroundImage: "linear-gradient(90deg, rgba(253,253,253,0.09) 1px, transparent 1px)",
-          backgroundSize: "112px 100%",
-        }}
-      />
       {/* halos circulaires très doux derrière le titre (blanc 4 % + bleu ciel 8 %) */}
       <div
         className="absolute left-1/2 top-[30%] h-[930px] w-[930px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-[0.05] blur-3xl"
@@ -181,9 +159,9 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
           className="mx-auto mt-8 max-w-3xl text-base leading-relaxed text-blanc/85 md:text-lg"
         >
-          Tchil connecte les personnes présentes au même endroit, au même moment.
-          <br className="hidden md:block" /> Un scan, une rencontre, des souvenirs — sans swipe,
-          sans profils fantômes.
+          Les applis de rencontre ont créé des matchs. Tchil crée des souvenirs :
+          <br className="hidden md:block" /> un lieu, un moment, une personne en face de vous.
+          <br className="hidden md:block" /> Un scan, une rencontre — sans swipe, sans profils fantômes.
         </motion.p>
 
         <motion.div
@@ -202,7 +180,7 @@ export function Hero() {
             </span>
           </a>
           <a
-            href="#concept"
+            href="#fonctionnalites"
             className="group flex items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir shadow-[0_14px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-[1.03]"
           >
             Comment ça marche ?
@@ -230,7 +208,10 @@ export function Hero() {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ delay: 0.55, duration: 1, type: "spring", bounce: 0.25 }}
       >
-        <PhoneSplash />
+        {/* Retour client #68 : flottement continu pour rendre le hero plus vivant */}
+        <div className="animate-float" style={{ animationDuration: "6s" }}>
+          <PhoneSplash />
+        </div>
       </motion.div>
     </section>
   );

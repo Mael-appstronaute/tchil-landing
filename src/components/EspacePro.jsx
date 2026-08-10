@@ -1,0 +1,178 @@
+import { ArrowLeft, ArrowRight, BarChart3, CalendarHeart, Gift } from "lucide-react";
+import { Reveal } from "./ui/Reveal.jsx";
+import { BrowserFrame } from "./ui/PhoneMockup.jsx";
+import { Footer } from "./Footer.jsx";
+
+/* Page dédiée aux professionnels (retours client #57, #59 et #61) :
+   la landing reste centrée sur les utilisateurs, tout le contenu
+   établissements vit ici — découverte du concept, avantages du
+   partenariat, accès à l'espace partenaire. */
+
+const POINTS = [
+  {
+    Icon: BarChart3,
+    title: "Un trafic réel, pas des promesses",
+    text: "Chaque check-in est un client physiquement chez vous. Suivez check-ins, visiteurs uniques et affluence depuis votre espace pro en ligne — rien à installer.",
+  },
+  {
+    Icon: Gift,
+    title: "Fidélisez sans carte papier",
+    text: "Définissez vos avantages et leur prix en Tchil Points : vos clients les gagnent en venant, et les dépensent chez vous.",
+  },
+  {
+    Icon: CalendarHeart,
+    title: "Animez vos soirées",
+    text: "Créez un événement en quelques secondes : les habitués qui suivent votre lieu reçoivent aussitôt une notification.",
+  },
+];
+
+export function EspacePro() {
+  return (
+    <>
+      <header className="absolute inset-x-0 top-0 z-50">
+        <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:px-8">
+          <a href="#/" aria-label="Tchil — retour à l'accueil">
+            <img src="/logos/principal-white.svg" alt="Tchil.app" className="h-10 w-auto md:h-11" />
+          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href="#/"
+              className="flex items-center gap-2 text-sm font-medium text-blanc/80 transition-colors duration-200 hover:text-blanc"
+            >
+              <ArrowLeft className="h-4 w-4" /> Retour au site
+            </a>
+            <a
+              href="https://pro.tchil.app"
+              target="_blank"
+              rel="noreferrer"
+              className="hidden rounded-full bg-blanc px-5 py-2.5 text-sm font-semibold text-noir shadow-[0_10px_30px_rgba(4,18,28,0.35)] transition-all duration-200 hover:scale-[1.03] sm:block"
+            >
+              Accéder à mon espace
+            </a>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        {/* Hero pro — même univers que le hero de l'accueil, sans la grille */}
+        <section className="relative overflow-hidden px-5 pb-16 pt-32 md:pb-24 md:pt-44">
+          <div className="absolute inset-0 bg-[#0e5c87]" aria-hidden="true" />
+          <div
+            className="absolute left-1/2 top-[30%] h-[930px] w-[930px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-[0.05] blur-3xl"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute left-1/2 top-[30%] h-[690px] w-[690px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#aadcff] opacity-[0.1] blur-3xl"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-x-0 top-0 h-56"
+            aria-hidden="true"
+            style={{ background: "linear-gradient(180deg, #04121c 8%, rgba(4,18,28,0) 100%)" }}
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 h-56"
+            aria-hidden="true"
+            style={{ background: "linear-gradient(0deg, #04121c 8%, rgba(4,18,28,0) 100%)" }}
+          />
+
+          <div className="relative z-10 mx-auto max-w-4xl text-center">
+            <Reveal>
+              <span className="font-asap inline-block rounded-full border border-blanc/30 bg-blanc/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-blanc backdrop-blur-sm">
+                Espace Pro
+              </span>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <h1 className="font-asap mt-6 text-4xl font-extrabold leading-[1.1] tracking-tight text-blanc text-balance md:text-6xl">
+                Une app côté rencontres, un espace pro côté comptoir.
+              </h1>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-blanc/85 md:text-lg">
+                Tchil fait venir les gens dans votre établissement, pas seulement sur un écran.
+                Devenez lieu partenaire et transformez chaque check-in en client fidèle.
+              </p>
+            </Reveal>
+            <Reveal delay={0.3} className="mt-9 flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="mailto:contact@tchil.app?subject=Devenir%20%C3%A9tablissement%20partenaire%20Tchil"
+                className="group flex items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir shadow-[0_14px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-[1.03]"
+              >
+                Devenir partenaire
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-noir text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </a>
+              <a
+                href="https://pro.tchil.app"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-blanc/40 px-6 py-3 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:border-blanc"
+              >
+                Accéder à mon espace
+              </a>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.45} className="relative z-10 mx-auto mt-14 w-full max-w-2xl">
+            <BrowserFrame
+              src="/screens/pro-dashboard.jpg"
+              alt="Tableau de bord de l'espace pro Tchil"
+              className="border-blanc/10 shadow-[0_30px_100px_rgba(4,18,28,0.55)]"
+            />
+          </Reveal>
+        </section>
+
+        {/* Avantages du partenariat */}
+        <section className="bg-blanc px-5 py-20 md:py-28">
+          <div className="mx-auto max-w-6xl">
+            <Reveal className="mx-auto mb-14 flex max-w-3xl flex-col items-center text-center">
+              <img src="/logos/icone-bleu.svg" alt="" aria-hidden="true" className="h-9 w-9" />
+              <span className="mt-3 h-0.5 w-10 rounded-full bg-tchil" aria-hidden="true" />
+              <h2 className="font-asap mt-6 text-3xl font-extrabold tracking-tight text-noir text-balance md:text-5xl">
+                Pourquoi devenir lieu partenaire ?
+              </h2>
+            </Reveal>
+
+            <div className="grid gap-8 md:grid-cols-3">
+              {POINTS.map((p) => (
+                <Reveal key={p.title} className="flex gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-noir/10 bg-white shadow-[0_6px_20px_rgba(23,53,75,0.1)]">
+                    <p.Icon className="h-5 w-5 text-tchil" strokeWidth={1.5} />
+                  </span>
+                  <span>
+                    <span className="font-asap block text-lg font-bold text-noir">{p.title}</span>
+                    <span className="mt-1 block text-sm leading-relaxed text-noir/55">{p.text}</span>
+                  </span>
+                </Reveal>
+              ))}
+            </div>
+
+            {/* Offre de lancement — même thème clair que le bandeau de la landing */}
+            <Reveal className="mt-16">
+              <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-noir/10 bg-white p-8 text-center shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:flex-row md:p-10 md:text-left">
+                <div className="flex items-start gap-4">
+                  <img src="/logos/icone-bleu.svg" alt="" className="hidden h-10 w-10 md:block" />
+                  <p className="max-w-xl text-base font-medium leading-relaxed text-noir md:text-lg">
+                    Vous gérez un bar, un café, un restaurant à Paris ou en banlieue ?{" "}
+                    <span className="font-semibold text-tchil">
+                      Profitez de l'offre de lancement partenaire.
+                    </span>
+                  </p>
+                </div>
+                <a
+                  href="mailto:contact@tchil.app?subject=Demande%20d%27invitation%20partenaire%20Tchil"
+                  className="shrink-0 rounded-full bg-tchil px-7 py-3.5 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:bg-noir"
+                >
+                  Demander une invitation
+                </a>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </>
+  );
+}

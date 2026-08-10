@@ -11,7 +11,7 @@ export function FinalCTA() {
         </Reveal>
         <Reveal delay={0.1}>
           <h2 className="font-asap mt-8 text-4xl font-extrabold tracking-tight text-blanc text-balance md:text-7xl">
-            La rencontre commence ici.
+            Plus qu'une application, une présence.
           </h2>
         </Reveal>
         <Reveal delay={0.2}>
@@ -27,25 +27,32 @@ export function FinalCTA() {
           <StoreBadges variant="light" />
         </Reveal>
 
-        {/* Trio d'écrans réels de l'app, en éventail, qui dépasse du bas du cadre */}
+        {/* Trio d'écrans réels de l'app, en éventail, qui dépasse du bas du cadre —
+            retour client #71 : flottement continu décalé pour un rendu vivant */}
         <div className="-mb-[14%] mt-16 flex items-start justify-center md:-mb-[12%]">
           <Reveal delay={0.5} className="z-0 hidden w-44 sm:block md:w-56">
             <div className="-mr-8 mt-14 -rotate-[9deg] md:-mr-10">
-              <PhoneFrame className="border-blanc/15 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
-                <ImageScreen src="/screens/app-conversation.png" alt="Conversation dans l'app Tchil" />
-              </PhoneFrame>
+              <div className="animate-float" style={{ animationDuration: "7s", animationDelay: "0.8s" }}>
+                <PhoneFrame className="border-blanc/15 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
+                  <ImageScreen src="/screens/app-conversation.png" alt="Conversation dans l'app Tchil" />
+                </PhoneFrame>
+              </div>
             </div>
           </Reveal>
           <Reveal delay={0.35} className="z-10 w-52 md:w-64">
-            <PhoneFrame className="border-blanc/25 shadow-[0_40px_100px_rgba(0,0,0,0.5)]">
-              <ImageScreen src="/screens/app-carte-light.jpg" alt="Carte des lieux partenaires Tchil" />
-            </PhoneFrame>
+            <div className="animate-float" style={{ animationDuration: "6s" }}>
+              <PhoneFrame className="border-blanc/25 shadow-[0_40px_100px_rgba(0,0,0,0.5)]">
+                <ImageScreen src="/screens/app-carte-light.jpg" alt="Carte des lieux partenaires Tchil" />
+              </PhoneFrame>
+            </div>
           </Reveal>
           <Reveal delay={0.5} className="z-0 hidden w-44 sm:block md:w-56">
             <div className="-ml-8 mt-14 rotate-[9deg] md:-ml-10">
-              <PhoneFrame className="border-blanc/15 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
-                <ImageScreen src="/screens/app-profil.png" alt="Profil vérifié dans l'app Tchil" />
-              </PhoneFrame>
+              <div className="animate-float" style={{ animationDuration: "7s", animationDelay: "1.6s" }}>
+                <PhoneFrame className="border-blanc/15 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
+                  <ImageScreen src="/screens/app-profil.png" alt="Profil vérifié dans l'app Tchil" />
+                </PhoneFrame>
+              </div>
             </div>
           </Reveal>
         </div>

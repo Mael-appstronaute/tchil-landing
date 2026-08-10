@@ -3,9 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const LINKS = [
-  { label: "Le concept", href: "#concept" },
   { label: "Fonctionnalités", href: "#fonctionnalites" },
-  { label: "Établissements", href: "#etablissements" },
   { label: "Tarifs", href: "#tarifs" },
 ];
 
@@ -42,6 +40,12 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <a
+            href="#/espace-pro"
+            className="hidden rounded-full border border-blanc/40 px-5 py-2.5 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:border-blanc sm:block"
+          >
+            Espace Pro
+          </a>
+          <a
             href="#cta"
             className="hidden rounded-full bg-blanc px-5 py-2.5 text-sm font-semibold text-noir shadow-[0_10px_30px_rgba(4,18,28,0.35)] transition-all duration-200 hover:scale-[1.03] sm:block"
           >
@@ -77,7 +81,7 @@ export function Navbar() {
               </button>
             </div>
             <ul className="mt-14 flex flex-col gap-6">
-              {LINKS.map((l, i) => (
+              {[...LINKS, { label: "Espace Pro", href: "#/espace-pro" }].map((l, i) => (
                 <motion.li
                   key={l.href}
                   initial={{ opacity: 0, y: 20 }}
