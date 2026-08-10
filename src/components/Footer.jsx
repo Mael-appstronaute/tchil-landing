@@ -1,4 +1,4 @@
-import { Instagram, Mail, Globe } from "lucide-react";
+import { Facebook, Instagram, Mail, Globe } from "lucide-react";
 
 const NAV = [
   { label: "Le concept", href: "#concept" },
@@ -15,7 +15,7 @@ export function Footer() {
         <div className="md:col-span-1">
           <img src="/logos/principal-white.svg" alt="Tchil.app" className="h-12 w-auto" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-blanc/50">
-            Une app qui rapproche les gens, au-delà des écrans.
+            Plus qu'une application, une présence.
           </p>
         </div>
 
@@ -54,16 +54,31 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a href="https://www.tchilapp.fr" className="flex items-center gap-2 text-sm text-blanc/60 transition-colors hover:text-tchil">
-                <Globe className="h-4 w-4" strokeWidth={1.5} /> www.tchilapp.fr
-              </a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center gap-2 text-sm text-blanc/60 transition-colors hover:text-tchil">
-                <Instagram className="h-4 w-4" strokeWidth={1.5} /> @tchilapp
+              <a href="https://www.tchil.app" className="flex items-center gap-2 text-sm text-blanc/60 transition-colors hover:text-tchil">
+                <Globe className="h-4 w-4" strokeWidth={1.5} /> www.tchil.app
               </a>
             </li>
           </ul>
+
+          {/* Retour client #64 : accès direct aux réseaux sociaux officiels */}
+          <div className="mt-5 flex flex-col gap-2.5">
+            <a
+              href="https://www.instagram.com/tchilapp"
+              target="_blank"
+              rel="noreferrer"
+              className="flex w-fit items-center gap-2 rounded-full border border-blanc/20 px-4 py-2 text-xs font-semibold text-blanc/80 transition-all duration-200 hover:border-tchil hover:text-tchil"
+            >
+              <Instagram className="h-3.5 w-3.5" strokeWidth={1.75} /> Suivre sur Instagram
+            </a>
+            <a
+              href="https://www.facebook.com/tchilapp"
+              target="_blank"
+              rel="noreferrer"
+              className="flex w-fit items-center gap-2 rounded-full border border-blanc/20 px-4 py-2 text-xs font-semibold text-blanc/80 transition-all duration-200 hover:border-tchil hover:text-tchil"
+            >
+              <Facebook className="h-3.5 w-3.5" strokeWidth={1.75} /> Suivre sur Facebook
+            </a>
+          </div>
         </div>
       </div>
 
@@ -71,21 +86,7 @@ export function Footer() {
         Application réservée aux 18 ans et plus. Données hébergées en France.
       </p>
 
-      {/* Logo géant en marquee */}
-      <div className="marquee-paused relative mt-10 overflow-hidden" aria-hidden="true">
-        <div className="marquee-track animate-marquee-slow flex w-max items-center">
-          {Array.from({ length: 16 }).map((_, i) => (
-            <img
-              key={i}
-              src="/logos/principal-white.svg"
-              alt=""
-              className="-mx-6 h-24 w-auto opacity-10 md:-mx-10 md:h-40"
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="border-t border-blanc/10 py-6 text-center text-xs text-blanc/40">
+      <div className="mt-10 border-t border-blanc/10 py-6 text-center text-xs text-blanc/40">
         © 2026 Tchil — Tous droits réservés.
       </div>
     </footer>
