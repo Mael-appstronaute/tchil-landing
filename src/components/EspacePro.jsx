@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, BarChart3, CalendarHeart, Gift } from "lucide-react";
+import { ArrowLeft, ArrowRight, BarChart3, CalendarCheck, CalendarHeart, Gift, Sparkles } from "lucide-react";
 import { Reveal } from "./ui/Reveal.jsx";
 import { BrowserFrame } from "./ui/PhoneMockup.jsx";
 import { Footer } from "./Footer.jsx";
@@ -6,7 +6,20 @@ import { Footer } from "./Footer.jsx";
 /* Page dédiée aux professionnels (retours client #57, #59 et #61) :
    la landing reste centrée sur les utilisateurs, tout le contenu
    établissements vit ici — découverte du concept, avantages du
-   partenariat, accès à l'espace partenaire. */
+   partenariat, accès à l'espace partenaire.
+   Retours Figma 10/08 : visuel événements dans le hero, message élargi à
+   toute structure recevant du public, bouton « Prendre rendez-vous »
+   (Google Agenda) et tarifs pro — offre de lancement Paris & IDF 2027. */
+
+/* TODO : remplacer par le lien public de prise de rendez-vous
+   du Google Agenda de la cliente (Google Calendar → rendez-vous). */
+const GOOGLE_AGENDA_URL = "https://calendar.app.google/";
+
+const TARIFS = [
+  { name: "Start", prix: "29,90", ancien: "49,90" },
+  { name: "Plus", prix: "39,90", ancien: "69,90", accent: true },
+  { name: "Premium", prix: "49,90", ancien: "89,90" },
+];
 
 const POINTS = [
   {
@@ -89,7 +102,8 @@ export function EspacePro() {
             </Reveal>
             <Reveal delay={0.2}>
               <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-blanc/85 md:text-lg">
-                Tchil fait venir les gens dans votre établissement, pas seulement sur un écran.
+                Bar, restaurant ou toute autre structure commerciale recevant du public :
+                Tchil fait venir les gens chez vous, pas seulement sur un écran.
                 Devenez lieu partenaire et transformez chaque check-in en client fidèle.
               </p>
             </Reveal>
@@ -114,12 +128,20 @@ export function EspacePro() {
             </Reveal>
           </div>
 
-          <Reveal delay={0.45} className="relative z-10 mx-auto mt-14 w-full max-w-2xl">
+          {/* Deux écrans du back-office : tableau de bord + gestion des événements */}
+          <Reveal delay={0.45} className="relative z-10 mx-auto mt-14 grid w-full max-w-5xl gap-8 md:grid-cols-2 md:gap-6">
             <BrowserFrame
               src="/screens/pro-dashboard.jpg"
               alt="Tableau de bord de l'espace pro Tchil"
               className="border-blanc/10 shadow-[0_30px_100px_rgba(4,18,28,0.55)]"
             />
+            <div className="md:translate-y-8">
+              <BrowserFrame
+                src="/screens/pro-evenements.jpg"
+                alt="Gestion des événements dans l'espace pro Tchil"
+                className="border-blanc/10 shadow-[0_30px_100px_rgba(4,18,28,0.55)]"
+              />
+            </div>
           </Reveal>
         </section>
 
@@ -148,24 +170,144 @@ export function EspacePro() {
               ))}
             </div>
 
-            {/* Offre de lancement — même thème clair que le bandeau de la landing */}
+            {/* Demande de rendez-vous — bars, restaurants et toute structure
+                recevant du public, créneau à réserver sur le Google Agenda */}
             <Reveal className="mt-16">
               <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-noir/10 bg-white p-8 text-center shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:flex-row md:p-10 md:text-left">
                 <div className="flex items-start gap-4">
                   <img src="/logos/icone-bleu.svg" alt="" className="hidden h-10 w-10 md:block" />
                   <p className="max-w-xl text-base font-medium leading-relaxed text-noir md:text-lg">
-                    Vous gérez un bar, un café, un restaurant à Paris ou en banlieue ?{" "}
+                    Bar, restaurant, café ou toute autre structure commerciale recevant du public :{" "}
                     <span className="font-semibold text-tchil">
-                      Profitez de l'offre de lancement partenaire.
-                    </span>
+                      vous souhaitez devenir un lieu Tchil et apparaître sur la carte de l'application ?
+                    </span>{" "}
+                    Réservez un créneau pour échanger sur le partenariat et les modalités pour rejoindre Tchil.
                   </p>
                 </div>
                 <a
-                  href="mailto:contact@tchil.app?subject=Demande%20d%27invitation%20partenaire%20Tchil"
-                  className="shrink-0 rounded-full bg-tchil px-7 py-3.5 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:bg-noir"
+                  href={GOOGLE_AGENDA_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex shrink-0 items-center gap-2 rounded-full bg-tchil px-7 py-3.5 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:bg-noir"
                 >
-                  Demander une invitation
+                  <CalendarCheck className="h-4 w-4" /> Prendre rendez-vous
                 </a>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* Tarifs pro — offre de lancement Paris & Île-de-France, valable toute
+            l'année 2027 : tarifs réduits, 6 mois offerts sur 12 d'engagement,
+            remises fidélité 2 et 3 ans. Tarifs standards de retour après 2027. */}
+        <section id="tarifs-pro" className="bg-[#f4f6f8] px-5 py-20 md:py-28">
+          <div className="mx-auto max-w-6xl">
+            <Reveal className="mx-auto mb-4 flex max-w-3xl flex-col items-center text-center">
+              <span className="flex w-fit items-center gap-1.5 rounded-full border border-tchil/40 bg-tchil/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-tchil">
+                <Sparkles className="h-3 w-3" strokeWidth={2.5} />
+                Offre de lancement · Paris &amp; Île-de-France
+              </span>
+              <h2 className="font-asap mt-6 text-3xl font-extrabold tracking-tight text-noir text-balance md:text-5xl">
+                Tarifs professionnels 2027
+              </h2>
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-noir/60">
+                Pendant toute l'année 2027, les lieux de Paris &amp; Île-de-France profitent
+                de tarifs de lancement réduits. Quelle que soit la formule :{" "}
+                <span className="font-semibold text-noir">
+                  engagement de 12 mois, dont 6 mois offerts.
+                </span>
+              </p>
+            </Reveal>
+
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {TARIFS.map((t) => (
+                <Reveal key={t.name}>
+                  <div
+                    className={`relative flex h-full flex-col rounded-3xl p-8 ${
+                      t.accent
+                        ? "bg-noir text-blanc shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
+                        : "border border-noir/10 bg-white text-noir shadow-[0_10px_40px_rgba(23,53,75,0.08)]"
+                    }`}
+                  >
+                    <span
+                      className={`font-asap text-xs font-bold uppercase tracking-[0.18em] ${
+                        t.accent ? "text-tchil" : "text-noir/50"
+                      }`}
+                    >
+                      {t.name}
+                    </span>
+                    <div className="mt-5 flex items-baseline gap-2">
+                      <span className="font-asap text-4xl font-extrabold tracking-tight">
+                        {t.prix} €
+                      </span>
+                      <span className={`text-sm ${t.accent ? "text-blanc/60" : "text-noir/50"}`}>
+                        /mois
+                      </span>
+                    </div>
+                    <p className={`mt-1 text-sm ${t.accent ? "text-blanc/60" : "text-noir/50"}`}>
+                      au lieu de <span className="line-through">{t.ancien} €/mois</span>
+                    </p>
+                    <span
+                      className={`mt-5 flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold ${
+                        t.accent ? "bg-tchil/20 text-tchil" : "bg-tchil/10 text-tchil"
+                      }`}
+                    >
+                      <Gift className="h-3 w-3" strokeWidth={2.5} />
+                      6 mois offerts
+                    </span>
+                    <p className={`mt-4 text-xs leading-relaxed ${t.accent ? "text-blanc/50" : "text-noir/45"}`}>
+                      Tarif de lancement valable toute l'année 2027 — engagement de 12 mois,
+                      dont 6 mois offerts.
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            {/* Remises selon la durée d'engagement */}
+            <Reveal className="mt-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                {[
+                  { duree: "Engagement 2 ans", remise: "−10 %" },
+                  { duree: "Engagement 3 ans", remise: "−20 %" },
+                ].map((e) => (
+                  <div
+                    key={e.duree}
+                    className="flex items-center justify-between gap-4 rounded-3xl border border-noir/10 bg-white p-6 shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:p-7"
+                  >
+                    <div>
+                      <p className="font-asap text-lg font-bold text-noir">{e.duree}</p>
+                      <p className="mt-0.5 text-sm text-noir/55">sur la totalité de l'engagement</p>
+                    </div>
+                    <span className="font-asap shrink-0 rounded-2xl bg-tchil/10 px-4 py-2.5 text-2xl font-extrabold text-tchil">
+                      {e.remise}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+
+            <Reveal className="mt-10 flex flex-col items-center gap-5 text-center">
+              <a
+                href={GOOGLE_AGENDA_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex items-center gap-2.5 rounded-full bg-noir py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03]"
+              >
+                <CalendarCheck className="h-4 w-4" /> Prendre rendez-vous
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-tchil text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </a>
+              <div className="max-w-2xl space-y-1 text-xs leading-relaxed text-noir/45">
+                <p>
+                  Après 2027, les tarifs standards s'appliquent : de 49,90 € à 89,90 €/mois
+                  selon la formule choisie.
+                </p>
+                <p>
+                  Le déploiement national de Tchil est prévu progressivement au cours de
+                  l'année 2027.
+                </p>
               </div>
             </Reveal>
           </div>
