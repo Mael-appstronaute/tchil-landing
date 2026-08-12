@@ -1,4 +1,6 @@
-import { ArrowLeft, ArrowRight, BarChart3, CalendarCheck, CalendarHeart, Gift, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, BarChart3, CalendarCheck, CalendarHeart, Gift, Sparkles, X, ZoomIn } from "lucide-react";
 import { Reveal } from "./ui/Reveal.jsx";
 import { BrowserFrame } from "./ui/PhoneMockup.jsx";
 import { Countdown } from "./ui/Countdown.jsx";
@@ -22,6 +24,78 @@ const TARIFS = [
   { name: "Premium", prix: "49,90", ancien: "89,90" },
 ];
 
+/* Écrans du back-office présentés dans le hero — cliquables pour un
+   agrandissement plein écran (retour client 12/08 : écrans en grand format). */
+const PRO_SCREENS = [
+  {
+    id: "dashboard",
+    src: "/screens/pro-dashboard.jpg",
+    alt: "Tableau de bord de l'espace pro Tchil",
+    label: "Le tableau de bord de votre établissement",
+  },
+  {
+    id: "evenements",
+    src: "/screens/pro-evenements.jpg",
+    alt: "Gestion des événements dans l'espace pro Tchil",
+    label: "La gestion de vos événements",
+  },
+];
+
+/** Lightbox : écran du back-office agrandi, fermeture clic / Échap. */
+function ProScreenLightbox({ index, onClose }) {
+  useEffect(() => {
+    if (index === null) return;
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [index, onClose]);
+
+  return (
+    <AnimatePresence>
+      {index !== null && (
+        <motion.div
+          className="fixed inset-0 z-[80] flex flex-col items-center justify-center bg-[#04121c]/90 px-5 backdrop-blur-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          onClick={onClose}
+        >
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Fermer l'aperçu"
+            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-blanc/25 text-blanc transition-colors hover:border-blanc"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <motion.div
+            className="w-[min(92vw,1200px)]"
+            initial={{ opacity: 0, y: 40, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.94 }}
+            transition={{ type: "spring", bounce: 0.22, duration: 0.5 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <BrowserFrame
+              src={PRO_SCREENS[index].src}
+              alt={PRO_SCREENS[index].alt}
+              className="border-blanc/10 shadow-[0_60px_160px_rgba(0,0,0,0.6)]"
+            />
+          </motion.div>
+          <p className="mt-6 text-center text-sm font-semibold text-blanc/85">
+            {PRO_SCREENS[index].label}
+          </p>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 const POINTS = [
   {
     Icon: BarChart3,
@@ -41,6 +115,8 @@ const POINTS = [
 ];
 
 export function EspacePro() {
+  const [zoom, setZoom] = useState(null);
+
   return (
     <>
       <header className="absolute inset-x-0 top-0 z-50">
@@ -134,20 +210,28 @@ export function EspacePro() {
             </Reveal>
           </div>
 
-          {/* Deux écrans du back-office : tableau de bord + gestion des événements */}
-          <Reveal delay={0.45} className="relative z-10 mx-auto mt-14 grid w-full max-w-5xl gap-8 md:grid-cols-2 md:gap-6">
-            <BrowserFrame
-              src="/screens/pro-dashboard.jpg"
-              alt="Tableau de bord de l'espace pro Tchil"
-              className="border-blanc/10 shadow-[0_30px_100px_rgba(4,18,28,0.55)]"
-            />
-            <div className="md:translate-y-8">
-              <BrowserFrame
-                src="/screens/pro-evenements.jpg"
-                alt="Gestion des événements dans l'espace pro Tchil"
-                className="border-blanc/10 shadow-[0_30px_100px_rgba(4,18,28,0.55)]"
-              />
-            </div>
+          {/* Deux écrans du back-office : tableau de bord + gestion des événements —
+              en grand format et cliquables pour un agrandissement plein écran */}
+          <Reveal delay={0.45} className="relative z-10 mx-auto mt-14 grid w-full max-w-6xl gap-8 md:grid-cols-2 md:gap-6">
+            {PRO_SCREENS.map((s, i) => (
+              <div key={s.id} className={i === 1 ? "md:translate-y-8" : ""}>
+                <button
+                  type="button"
+                  onClick={() => setZoom(i)}
+                  aria-label={`Agrandir : ${s.label}`}
+                  className="group relative block w-full cursor-zoom-in transition-transform duration-300 hover:-translate-y-2"
+                >
+                  <BrowserFrame
+                    src={s.src}
+                    alt={s.alt}
+                    className="border-blanc/10 shadow-[0_30px_100px_rgba(4,18,28,0.55)]"
+                  />
+                  <span className="pointer-events-none absolute right-3 top-10 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-noir/70 text-blanc opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
+                    <ZoomIn className="h-4 w-4" />
+                  </span>
+                </button>
+              </div>
+            ))}
           </Reveal>
         </section>
 
@@ -319,6 +403,8 @@ export function EspacePro() {
           </div>
         </section>
       </main>
+
+      <ProScreenLightbox index={zoom} onClose={() => setZoom(null)} />
 
       <Footer />
     </>

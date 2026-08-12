@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Infinity as InfinityIcon, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { SectionTitle } from "./ui/SectionTitle.jsx";
 import { Reveal } from "./ui/Reveal.jsx";
 import { BrowserFrame } from "./ui/PhoneMockup.jsx";
@@ -32,11 +32,9 @@ export function Pricing() {
             />
             <div className="relative grid gap-10 p-8 md:grid-cols-2 md:gap-6 md:p-12">
               <div>
-                <span className="flex w-fit items-center gap-1.5 rounded-full border border-tchil/50 bg-tchil/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-tchil">
-                  <InfinityIcon className="h-3 w-3" strokeWidth={2.5} />
-                  Gratuit, pour toujours
-                </span>
-                <h3 className="font-asap mt-5 text-2xl font-extrabold leading-tight tracking-tight text-balance md:text-4xl">
+                {/* Retour client 12/08 : pas de promesse « pour toujours » —
+                    on met simplement en avant la gratuité de l'essentiel. */}
+                <h3 className="font-asap text-2xl font-extrabold leading-tight tracking-tight text-balance md:text-4xl">
                   L'essentiel de Tchil, sans carte bancaire.
                 </h3>
                 <ul className="mt-6 space-y-3">

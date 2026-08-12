@@ -199,8 +199,6 @@ export function Testimonials() {
               </button>
             </div>
           </div>
-
-          <p className="mt-6 text-center text-[10px] text-noir/25">Témoignages illustratifs</p>
         </Reveal>
       </div>
     </section>

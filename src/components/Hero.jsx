@@ -109,12 +109,13 @@ const SCREENS = [
     En mobile, 3 écrans restent visibles (centre + voisins) ; les 2 écrans
     extérieurs n'apparaissent qu'à partir de sm. */
 function PhoneFan({ onOpen }) {
+  /* Retour client 12/08 : écrans en plus grand format pour la lisibilité */
   const widths = [
-    "hidden w-40 sm:block md:w-52",
-    "w-28 sm:w-40 md:w-52",
-    "z-10 w-44 sm:w-56 md:w-72",
-    "w-28 sm:w-40 md:w-52",
-    "hidden w-40 sm:block md:w-52",
+    "hidden w-44 sm:block md:w-60",
+    "w-28 sm:w-44 md:w-60",
+    "z-10 w-44 sm:w-64 md:w-80",
+    "w-28 sm:w-44 md:w-60",
+    "hidden w-44 sm:block md:w-60",
   ];
   const tilt = [
     "-mr-9 mt-24 -rotate-[13deg] md:-mr-12",
@@ -190,7 +191,7 @@ function ScreenLightbox({ index, onClose }) {
             <X className="h-5 w-5" />
           </button>
           <motion.div
-            className="w-64 md:w-80"
+            className="w-72 md:w-[380px]"
             initial={{ opacity: 0, y: 40, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.92 }}

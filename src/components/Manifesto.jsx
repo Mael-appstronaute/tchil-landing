@@ -127,8 +127,9 @@ export function Manifesto() {
         </motion.div>
       </div>
 
-      {/* Téléphone centré sous le texte, entouré de cartes flottantes */}
-      <div className="relative z-10 mx-auto mt-28 w-72 md:mt-40 md:w-[340px]">
+      {/* Téléphone centré sous le texte, entouré de cartes flottantes
+          (retour client 12/08 : écran agrandi pour la lisibilité) */}
+      <div className="relative z-10 mx-auto mt-28 w-80 md:mt-40 md:w-[400px]">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}

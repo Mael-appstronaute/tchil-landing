@@ -53,19 +53,19 @@ export function FinalCTA() {
             NB retour client 10/08 : ces captures proviennent des maquettes app —
             à ré-exporter une fois les maquettes mises à jour (thème bleu clair). */}
         <div className="-mb-[14%] mt-16 flex items-start justify-center md:-mb-[12%]">
-          <Reveal delay={0.5} className="z-0 hidden w-44 sm:block md:w-56">
+          <Reveal delay={0.5} className="z-0 hidden w-48 sm:block md:w-72">
             <div className="-mr-8 mt-14 -rotate-[9deg] md:-mr-10">
               <PhoneFrame className="border-blanc/15 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
                 <ImageScreen src="/screens/app-conversation.png" alt="Conversation dans l'app Tchil" />
               </PhoneFrame>
             </div>
           </Reveal>
-          <Reveal delay={0.35} className="z-10 w-52 md:w-64">
+          <Reveal delay={0.35} className="z-10 w-56 md:w-80">
             <PhoneFrame className="border-blanc/25 shadow-[0_40px_100px_rgba(0,0,0,0.5)]">
               <ImageScreen src="/screens/app-carte-light.jpg" alt="Carte des lieux partenaires Tchil" />
             </PhoneFrame>
           </Reveal>
-          <Reveal delay={0.5} className="z-0 hidden w-44 sm:block md:w-56">
+          <Reveal delay={0.5} className="z-0 hidden w-48 sm:block md:w-72">
             <div className="-ml-8 mt-14 rotate-[9deg] md:-ml-10">
               <PhoneFrame className="border-blanc/15 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
                 <ImageScreen src="/screens/app-profil.png" alt="Profil vérifié dans l'app Tchil" />

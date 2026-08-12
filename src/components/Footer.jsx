@@ -95,7 +95,7 @@ export function Footer() {
           {/* Retour client #64 : accès direct aux réseaux sociaux officiels */}
           <div className="mt-5 flex flex-col gap-2.5">
             <a
-              href="https://www.instagram.com/tchilapp"
+              href="https://www.instagram.com/tchil.app?igsh=MWg5ZGZoZzIyZDFt"
               target="_blank"
               rel="noreferrer"
               className="flex w-fit items-center gap-2 rounded-full border border-blanc/20 px-4 py-2 text-xs font-semibold text-blanc/80 transition-all duration-200 hover:border-tchil hover:text-tchil"
@@ -103,7 +103,7 @@ export function Footer() {
               <InstagramColorIcon className="h-4 w-4" /> Suivre sur Instagram
             </a>
             <a
-              href="https://www.facebook.com/tchilapp"
+              href="https://www.facebook.com/share/1JxF7qqWdk/"
               target="_blank"
               rel="noreferrer"
               className="flex w-fit items-center gap-2 rounded-full border border-blanc/20 px-4 py-2 text-xs font-semibold text-blanc/80 transition-all duration-200 hover:border-tchil hover:text-tchil"
