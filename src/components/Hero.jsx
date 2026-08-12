@@ -105,9 +105,17 @@ const SCREENS = [
   },
 ];
 
-/** Éventail d'écrans de l'app, coupé par le bas du hero — clic pour agrandir. */
+/** Éventail d'écrans de l'app, coupé par le bas du hero — clic pour agrandir.
+    En mobile, 3 écrans restent visibles (centre + voisins) ; les 2 écrans
+    extérieurs n'apparaissent qu'à partir de sm. */
 function PhoneFan({ onOpen }) {
-  const side = "hidden w-40 sm:block md:w-52";
+  const widths = [
+    "hidden w-40 sm:block md:w-52",
+    "w-28 sm:w-40 md:w-52",
+    "z-10 w-44 sm:w-56 md:w-72",
+    "w-28 sm:w-40 md:w-52",
+    "hidden w-40 sm:block md:w-52",
+  ];
   const tilt = [
     "-mr-9 mt-24 -rotate-[13deg] md:-mr-12",
     "-mr-7 mt-10 -rotate-[6deg] md:-mr-9",
@@ -120,7 +128,7 @@ function PhoneFan({ onOpen }) {
       {SCREENS.map((s, i) => {
         const center = i === 2;
         return (
-          <div key={s.id} className={center ? "z-10 w-56 md:w-72" : `${side} ${i < 2 ? "z-0" : "z-0"}`}>
+          <div key={s.id} className={widths[i]}>
             <div className={tilt[i]}>
               <button
                 type="button"
