@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, X, ZoomIn } from "lucide-react";
 import { StoreBadges } from "./ui/StoreBadges.jsx";
+import { Countdown } from "./ui/Countdown.jsx";
 import { PhoneFrame, ImageScreen } from "./ui/PhoneMockup.jsx";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -318,6 +319,16 @@ export function Hero() {
           className="mt-6 flex justify-center"
         >
           <StoreBadges variant="light" />
+        </motion.div>
+
+        {/* Compte à rebours jusqu'au lancement (retour client 10/08) */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 30, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.7, delay: 0.72, ease: EASE }}
+          className="mt-10 flex justify-center"
+        >
+          <Countdown />
         </motion.div>
       </div>
 

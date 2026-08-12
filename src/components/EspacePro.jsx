@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight, BarChart3, CalendarCheck, CalendarHeart, Gift, Sparkles } from "lucide-react";
 import { Reveal } from "./ui/Reveal.jsx";
 import { BrowserFrame } from "./ui/PhoneMockup.jsx";
+import { Countdown } from "./ui/Countdown.jsx";
 import { Footer } from "./Footer.jsx";
 
 /* Page dédiée aux professionnels (retours client #57, #59 et #61) :
@@ -125,6 +126,11 @@ export function EspacePro() {
               >
                 Accéder à mon espace
               </a>
+            </Reveal>
+
+            {/* Compte à rebours jusqu'au lancement (retour client 10/08) */}
+            <Reveal delay={0.4} className="mt-10 flex justify-center">
+              <Countdown />
             </Reveal>
           </div>
 
