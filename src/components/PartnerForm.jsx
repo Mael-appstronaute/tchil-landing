@@ -52,6 +52,8 @@ async function sendPartnerRequest({ categorie, ...data }) {
     body: JSON.stringify({
       _subject: `Demande partenaire Tchil — ${data.etablissement} (${categorie})`,
       _template: "table",
+      /* « Répondre » dans la boîte mail écrit directement au professionnel */
+      _replyto: data.email,
       Catégorie: categorie,
       "Nom de l'établissement": data.etablissement,
       "Responsable / contact": data.contact,
