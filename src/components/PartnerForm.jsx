@@ -1,11 +1,30 @@
 import { useState } from "react";
-import { ArrowRight, CheckCircle2, LoaderCircle, MailWarning } from "lucide-react";
+import {
+  ArrowRight,
+  BedDouble,
+  Check,
+  CheckCircle2,
+  Clock3,
+  Coffee,
+  Dumbbell,
+  Flower2,
+  LoaderCircle,
+  Mail,
+  MailWarning,
+  Martini,
+  Beer,
+  Scissors,
+  ShieldCheck,
+  Sparkles,
+  Store,
+  UtensilsCrossed,
+} from "lucide-react";
 import { Reveal } from "./ui/Reveal.jsx";
 
 /* Formulaire de prise de contact professionnel (retour client 21/08) :
    porte d'entrée des futurs partenaires — toutes les infos nécessaires
    pour identifier, qualifier et enregistrer l'établissement, avec une
-   catégorie d'activité clairement sélectionnable.
+   catégorie d'activité clairement sélectionnable (cartes à icônes).
 
    Envoi via FormSubmit (https://formsubmit.co) vers contact@tchil.app,
    sans backend ni création de compte. IMPORTANT : lors de la toute
@@ -15,33 +34,64 @@ import { Reveal } from "./ui/Reveal.jsx";
 const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/contact@tchil.app";
 
 const CATEGORIES = [
-  "Bar",
-  "Restaurant",
-  "Pub",
-  "Café",
-  "Hôtel",
-  "Coiffeur",
-  "Spa & bien-être",
-  "Salle de sport",
-  "Autre",
+  { label: "Bar", Icon: Martini },
+  { label: "Restaurant", Icon: UtensilsCrossed },
+  { label: "Pub", Icon: Beer },
+  { label: "Café", Icon: Coffee },
+  { label: "Hôtel", Icon: BedDouble },
+  { label: "Coiffeur", Icon: Scissors },
+  { label: "Spa & bien-être", Icon: Flower2 },
+  { label: "Salle de sport", Icon: Dumbbell },
+  { label: "Autre", Icon: Store },
+];
+
+const REASSURANCE = [
+  {
+    Icon: Clock3,
+    title: "Réponse rapide",
+    text: "L'équipe Tchil revient vers vous sous 48 h ouvrées pour qualifier votre demande.",
+  },
+  {
+    Icon: Sparkles,
+    title: "Offre de lancement",
+    text: "Paris & Île-de-France 2027 : tarifs réduits et 6 mois offerts sur 12 d'engagement.",
+  },
+  {
+    Icon: ShieldCheck,
+    title: "Données protégées",
+    text: "Vos informations ne servent qu'à traiter votre demande de partenariat.",
+  },
 ];
 
 const inputClass =
-  "w-full rounded-2xl border border-noir/15 bg-white px-4 py-3 text-sm text-noir placeholder:text-noir/35 outline-none transition-all duration-200 focus:border-tchil focus:ring-2 focus:ring-tchil/25";
+  "peer w-full rounded-xl border border-noir/12 bg-[#f7f9fa] px-4 py-3 text-sm text-noir placeholder:text-noir/30 outline-none transition-all duration-200 focus:border-tchil focus:bg-white focus:ring-4 focus:ring-tchil/15";
 
 function Field({ label, required, children, className = "" }) {
   return (
     <label className={`block ${className}`}>
-      <span className="mb-1.5 flex items-baseline gap-1 text-sm font-semibold text-noir">
+      <span className="mb-1.5 flex items-baseline gap-1 text-[13px] font-semibold text-noir">
         {label}
         {required ? (
           <span className="text-tchil" aria-hidden="true">*</span>
         ) : (
-          <span className="text-xs font-normal text-noir/40">(facultatif)</span>
+          <span className="text-[11px] font-normal text-noir/40">(facultatif)</span>
         )}
       </span>
       {children}
     </label>
+  );
+}
+
+/** Petit intitulé d'étape — numérotation Asap + trait, façon éditorial Tchil. */
+function StepTitle({ n, children }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="font-asap text-xs font-extrabold tracking-[0.08em] text-tchil">{n}</span>
+      <span className="font-asap text-sm font-bold uppercase tracking-[0.14em] text-noir">
+        {children}
+      </span>
+      <span className="h-px flex-1 bg-noir/10" aria-hidden="true" />
+    </div>
   );
 }
 
@@ -90,28 +140,9 @@ export function PartnerForm() {
     }
   };
 
-  if (status === "sent") {
-    return (
-      <section id="devenir-partenaire" className="bg-blanc px-5 py-20 md:py-28">
-        <div className="mx-auto flex max-w-2xl flex-col items-center rounded-3xl border border-noir/10 bg-white p-10 text-center shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:p-14">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-tchil/10">
-            <CheckCircle2 className="h-7 w-7 text-tchil" strokeWidth={1.8} />
-          </span>
-          <h2 className="font-asap mt-6 text-2xl font-extrabold tracking-tight text-noir md:text-3xl">
-            Demande bien envoyée !
-          </h2>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-noir/60">
-            Merci pour votre intérêt. L'équipe Tchil étudie votre demande et revient
-            vers vous rapidement pour préparer l'intégration de votre établissement.
-          </p>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section id="devenir-partenaire" className="bg-blanc px-5 py-20 md:py-28">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-6xl">
         <Reveal className="mx-auto mb-12 flex max-w-2xl flex-col items-center text-center">
           <img src="/logos/icone-bleu.svg" alt="" aria-hidden="true" className="h-9 w-9" />
           <span className="mt-3 h-0.5 w-10 rounded-full bg-tchil" aria-hidden="true" />
@@ -125,122 +156,240 @@ export function PartnerForm() {
         </Reveal>
 
         <Reveal>
-          <form
-            onSubmit={onSubmit}
-            noValidate={false}
-            className="rounded-3xl border border-noir/10 bg-white p-6 shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:p-10"
-          >
-            {/* Catégorie d'activité — sélection claire dès le début du formulaire */}
-            <div id="categorie-etablissement">
-              <span className="mb-1.5 flex items-baseline gap-1 text-sm font-semibold text-noir">
-                Type d'établissement <span className="text-tchil" aria-hidden="true">*</span>
-              </span>
-              <div role="radiogroup" aria-label="Type d'établissement" className="flex flex-wrap gap-2">
-                {CATEGORIES.map((c) => {
-                  const active = categorie === c;
-                  return (
-                    <button
-                      key={c}
-                      type="button"
-                      role="radio"
-                      aria-checked={active}
-                      onClick={() => {
-                        setCategorie(c);
-                        setCategorieError(false);
-                      }}
-                      className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                        active
-                          ? "border-tchil bg-tchil text-blanc shadow-[0_6px_20px_rgba(110,170,204,0.4)]"
-                          : "border-noir/15 bg-white text-noir/70 hover:border-tchil/60 hover:text-noir"
+          <div className="grid overflow-hidden rounded-[2rem] border border-noir/10 bg-white shadow-[0_20px_70px_rgba(23,53,75,0.12)] lg:grid-cols-[380px_1fr]">
+            {/* Panneau gauche — même univers bleu que le hero */}
+            <aside className="relative overflow-hidden bg-[#0e5c87] p-8 md:p-10">
+              <div
+                className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-white opacity-[0.07] blur-3xl"
+                aria-hidden="true"
+              />
+              <div
+                className="absolute -bottom-32 -right-20 h-96 w-96 rounded-full bg-[#aadcff] opacity-[0.14] blur-3xl"
+                aria-hidden="true"
+              />
+              <img
+                src="/logos/icone-white.svg"
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none absolute -bottom-10 -right-10 h-52 w-52 opacity-[0.07]"
+              />
+
+              <div className="relative z-10 flex h-full flex-col">
+                <span className="font-asap w-fit rounded-full border border-blanc/30 bg-blanc/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-blanc backdrop-blur-sm">
+                  Partenariat
+                </span>
+                <h3 className="font-asap mt-5 text-2xl font-extrabold leading-tight tracking-tight text-blanc md:text-[1.7rem]">
+                  Votre établissement sur la carte Tchil.
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-blanc/75">
+                  Un formulaire, et on s'occupe du reste : qualification de votre
+                  demande, présentation du partenariat et préparation de votre
+                  espace pro.
+                </p>
+
+                <ul className="mt-8 space-y-5">
+                  {REASSURANCE.map((r) => (
+                    <li key={r.title} className="flex gap-3.5">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-blanc/20 bg-blanc/10 backdrop-blur-sm">
+                        <r.Icon className="h-4 w-4 text-blanc" strokeWidth={1.8} />
+                      </span>
+                      <span>
+                        <span className="font-asap block text-sm font-bold text-blanc">{r.title}</span>
+                        <span className="mt-0.5 block text-[13px] leading-relaxed text-blanc/65">
+                          {r.text}
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href="mailto:contact@tchil.app"
+                  className="mt-auto flex items-center gap-2.5 pt-10 text-sm font-semibold text-blanc/85 transition-colors duration-200 hover:text-blanc"
+                >
+                  <Mail className="h-4 w-4" /> contact@tchil.app
+                </a>
+              </div>
+            </aside>
+
+            {/* Formulaire */}
+            <div className="p-6 md:p-10 lg:p-12">
+              {status === "sent" ? (
+                <div className="flex h-full min-h-[480px] flex-col items-center justify-center text-center">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-tchil/10">
+                    <CheckCircle2 className="h-8 w-8 text-tchil" strokeWidth={1.8} />
+                  </span>
+                  <h3 className="font-asap mt-6 text-2xl font-extrabold tracking-tight text-noir md:text-3xl">
+                    Demande bien envoyée !
+                  </h3>
+                  <p className="mt-3 max-w-md text-sm leading-relaxed text-noir/60">
+                    Merci pour votre intérêt. L'équipe Tchil étudie votre demande et
+                    revient vers vous rapidement pour préparer l'intégration de votre
+                    établissement.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={onSubmit}>
+                  {/* Étape 1 — catégorie d'activité en cartes à icônes */}
+                  <div id="categorie-etablissement">
+                    <StepTitle n="01">Votre activité</StepTitle>
+                    <p className="mt-2 text-[13px] text-noir/50">
+                      Sélectionnez le type de votre établissement.
+                      <span className="ml-1 text-tchil" aria-hidden="true">*</span>
+                    </p>
+                    <div
+                      role="radiogroup"
+                      aria-label="Type d'établissement"
+                      className={`mt-4 grid grid-cols-3 gap-2.5 rounded-2xl sm:grid-cols-4 md:gap-3 lg:grid-cols-5 ${
+                        categorieError ? "ring-2 ring-red-300 ring-offset-4" : ""
                       }`}
                     >
-                      {c}
+                      {CATEGORIES.map(({ label, Icon }) => {
+                        const active = categorie === label;
+                        return (
+                          <button
+                            key={label}
+                            type="button"
+                            role="radio"
+                            aria-checked={active}
+                            onClick={() => {
+                              setCategorie(label);
+                              setCategorieError(false);
+                            }}
+                            className={`group relative flex flex-col items-center gap-2 rounded-2xl border px-2 py-4 transition-all duration-200 ${
+                              active
+                                ? "border-tchil bg-tchil/10 shadow-[0_8px_24px_rgba(110,170,204,0.35)]"
+                                : "border-noir/10 bg-white hover:-translate-y-0.5 hover:border-tchil/50 hover:shadow-[0_8px_24px_rgba(23,53,75,0.08)]"
+                            }`}
+                          >
+                            <span
+                              className={`absolute right-2 top-2 flex h-4.5 w-4.5 items-center justify-center rounded-full transition-all duration-200 ${
+                                active ? "scale-100 bg-tchil opacity-100" : "scale-50 opacity-0"
+                              }`}
+                              aria-hidden="true"
+                            >
+                              <Check className="h-3 w-3 text-blanc" strokeWidth={3} />
+                            </span>
+                            <span
+                              className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-200 ${
+                                active ? "bg-tchil text-blanc" : "bg-[#f0f4f7] text-noir/60 group-hover:text-tchil"
+                              }`}
+                            >
+                              <Icon className="h-5 w-5" strokeWidth={1.7} />
+                            </span>
+                            <span
+                              className={`text-center text-[12px] font-semibold leading-tight ${
+                                active ? "text-noir" : "text-noir/65"
+                              }`}
+                            >
+                              {label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {categorieError && (
+                      <p className="mt-3 text-xs font-medium text-red-500">
+                        Merci de sélectionner le type de votre établissement.
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Étape 2 — l'établissement */}
+                  <div className="mt-9">
+                    <StepTitle n="02">Votre établissement</StepTitle>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      <Field label="Nom de l'établissement" required>
+                        <input name="etablissement" required placeholder="Le Comptoir du Canal" className={inputClass} />
+                      </Field>
+                      <Field label="Raison sociale / entreprise" required>
+                        <input name="raisonSociale" required placeholder="SARL Comptoir du Canal" className={inputClass} />
+                      </Field>
+                      <Field label="Adresse" required className="md:col-span-2">
+                        <input name="adresse" required placeholder="12 quai de Valmy" className={inputClass} />
+                      </Field>
+                      <Field label="Code postal" required>
+                        <input name="codePostal" required inputMode="numeric" placeholder="75010" className={inputClass} />
+                      </Field>
+                      <Field label="Ville" required>
+                        <input name="ville" required placeholder="Paris" className={inputClass} />
+                      </Field>
+                    </div>
+                  </div>
+
+                  {/* Étape 3 — le contact */}
+                  <div className="mt-9">
+                    <StepTitle n="03">Votre contact</StepTitle>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      <Field label="Nom et prénom" required>
+                        <input name="contact" required placeholder="Marie Dupont" className={inputClass} />
+                      </Field>
+                      <Field label="Téléphone" required>
+                        <input name="telephone" type="tel" required placeholder="06 12 34 56 78" className={inputClass} />
+                      </Field>
+                      <Field label="Adresse e-mail" required className="md:col-span-2">
+                        <input name="email" type="email" required placeholder="contact@moncommerce.fr" className={inputClass} />
+                      </Field>
+                    </div>
+                  </div>
+
+                  {/* Étape 4 — présence en ligne + message */}
+                  <div className="mt-9">
+                    <StepTitle n="04">Pour aller plus loin</StepTitle>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      <Field label="Site internet">
+                        <input name="site" type="url" placeholder="https://moncommerce.fr" className={inputClass} />
+                      </Field>
+                      <Field label="Réseaux sociaux">
+                        <input name="reseaux" placeholder="@moncommerce (Instagram, Facebook…)" className={inputClass} />
+                      </Field>
+                      <Field label="Commentaire ou demande particulière" className="md:col-span-2">
+                        <textarea
+                          name="commentaire"
+                          rows={4}
+                          placeholder="Dites-nous en plus sur votre établissement, vos attentes, vos questions…"
+                          className={`${inputClass} resize-y`}
+                        />
+                      </Field>
+                    </div>
+                  </div>
+
+                  {status === "error" && (
+                    <div className="mt-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                      <MailWarning className="mt-0.5 h-4 w-4 shrink-0" />
+                      <p>
+                        L'envoi a échoué. Réessayez dans un instant, ou écrivez-nous directement à{" "}
+                        <a href="mailto:contact@tchil.app" className="font-semibold underline">
+                          contact@tchil.app
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="mt-9 flex flex-col items-center gap-4 border-t border-noir/10 pt-6 md:flex-row md:justify-between">
+                    <p className="text-xs leading-relaxed text-noir/45">
+                      <span className="text-tchil">*</span> Champs obligatoires.
+                    </p>
+                    <button
+                      type="submit"
+                      disabled={status === "sending"}
+                      className="group flex shrink-0 items-center gap-2.5 rounded-full bg-noir py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] disabled:pointer-events-none disabled:opacity-60"
+                    >
+                      {status === "sending" ? "Envoi en cours…" : "Envoyer ma demande"}
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-tchil text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
+                        {status === "sending" ? (
+                          <LoaderCircle className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <ArrowRight className="h-4 w-4" />
+                        )}
+                      </span>
                     </button>
-                  );
-                })}
-              </div>
-              {categorieError && (
-                <p className="mt-2 text-xs font-medium text-red-500">
-                  Merci de sélectionner le type de votre établissement.
-                </p>
+                  </div>
+                </form>
               )}
             </div>
-
-            <div className="mt-7 grid gap-5 md:grid-cols-2">
-              <Field label="Nom de l'établissement" required>
-                <input name="etablissement" required placeholder="Le Comptoir du Canal" className={inputClass} />
-              </Field>
-              <Field label="Nom et prénom du contact" required>
-                <input name="contact" required placeholder="Marie Dupont" className={inputClass} />
-              </Field>
-              <Field label="Adresse e-mail" required>
-                <input name="email" type="email" required placeholder="contact@moncommerce.fr" className={inputClass} />
-              </Field>
-              <Field label="Numéro de téléphone" required>
-                <input name="telephone" type="tel" required placeholder="06 12 34 56 78" className={inputClass} />
-              </Field>
-              <Field label="Adresse de l'établissement" required className="md:col-span-2">
-                <input name="adresse" required placeholder="12 quai de Valmy" className={inputClass} />
-              </Field>
-              <Field label="Code postal" required>
-                <input name="codePostal" required inputMode="numeric" placeholder="75010" className={inputClass} />
-              </Field>
-              <Field label="Ville" required>
-                <input name="ville" required placeholder="Paris" className={inputClass} />
-              </Field>
-              <Field label="Raison sociale / nom de l'entreprise" required className="md:col-span-2">
-                <input name="raisonSociale" required placeholder="SARL Comptoir du Canal" className={inputClass} />
-              </Field>
-              <Field label="Site internet">
-                <input name="site" type="url" placeholder="https://moncommerce.fr" className={inputClass} />
-              </Field>
-              <Field label="Réseaux sociaux">
-                <input name="reseaux" placeholder="@moncommerce (Instagram, Facebook…)" className={inputClass} />
-              </Field>
-              <Field label="Commentaire ou demande particulière" className="md:col-span-2">
-                <textarea
-                  name="commentaire"
-                  rows={4}
-                  placeholder="Dites-nous en plus sur votre établissement, vos attentes, vos questions…"
-                  className={`${inputClass} resize-y`}
-                />
-              </Field>
-            </div>
-
-            {status === "error" && (
-              <div className="mt-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-                <MailWarning className="mt-0.5 h-4 w-4 shrink-0" />
-                <p>
-                  L'envoi a échoué. Réessayez dans un instant, ou écrivez-nous directement à{" "}
-                  <a href="mailto:contact@tchil.app" className="font-semibold underline">
-                    contact@tchil.app
-                  </a>
-                  .
-                </p>
-              </div>
-            )}
-
-            <div className="mt-8 flex flex-col items-center gap-4 md:flex-row md:justify-between">
-              <p className="text-xs leading-relaxed text-noir/45">
-                <span className="text-tchil">*</span> Champs obligatoires. Vos informations
-                ne sont utilisées que pour traiter votre demande de partenariat.
-              </p>
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="group flex shrink-0 items-center gap-2.5 rounded-full bg-noir py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] disabled:pointer-events-none disabled:opacity-60"
-              >
-                {status === "sending" ? "Envoi en cours…" : "Envoyer ma demande"}
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-tchil text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
-                  {status === "sending" ? (
-                    <LoaderCircle className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <ArrowRight className="h-4 w-4" />
-                  )}
-                </span>
-              </button>
-            </div>
-          </form>
+          </div>
         </Reveal>
       </div>
     </section>
