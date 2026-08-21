@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   BedDouble,
+  CalendarCheck,
   Check,
   CheckCircle2,
   Clock3,
   Coffee,
   Dumbbell,
   Flower2,
-  LoaderCircle,
   Mail,
-  MailWarning,
   Martini,
   Beer,
   Scissors,
@@ -18,20 +18,29 @@ import {
   Sparkles,
   Store,
   UtensilsCrossed,
+  X,
 } from "lucide-react";
 import { Reveal } from "./ui/Reveal.jsx";
 
-/* Formulaire de prise de contact professionnel (retour client 21/08) :
+/* Formulaire de prise de contact professionnel (retours client 21/08) :
    porte d'entrée des futurs partenaires — toutes les infos nécessaires
    pour identifier, qualifier et enregistrer l'établissement, avec une
    catégorie d'activité clairement sélectionnable (cartes à icônes).
 
-   Envoi via FormSubmit (https://formsubmit.co) vers contact@tchil.app,
-   sans backend ni création de compte. IMPORTANT : lors de la toute
-   première soumission, FormSubmit envoie un e-mail d'activation à
-   contact@tchil.app — il faut cliquer le lien de confirmation une seule
-   fois pour activer la réception des demandes. */
-const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/contact@tchil.app";
+   Après l'envoi, une fenêtre propose — de manière FACULTATIVE — de
+   prendre rendez-vous avec Tchil (créneau Google Agenda, demande soumise
+   à validation). Ce bouton de prise de rendez-vous n'existe NULLE PART
+   ailleurs : il n'apparaît qu'une fois le formulaire complété et envoyé.
+
+   TODO Brevo : l'envoi des informations par e-mail sera branché par la
+   cliente via Brevo — voir sendPartnerRequest() ci-dessous. */
+const BOOKING_URL = "https://calendar.app.google/MyGRypvYDJkWiwDc7";
+
+/** Payload de la demande, prêt à brancher sur Brevo (aucun envoi pour l'instant). */
+async function sendPartnerRequest(payload) {
+  // TODO Brevo : envoyer `payload` (API Brevo / formulaire Brevo) — géré par la cliente.
+  void payload;
+}
 
 const CATEGORIES = [
   { label: "Bar", Icon: Martini },
@@ -95,11 +104,96 @@ function StepTitle({ n, children }) {
   );
 }
 
+/** Fenêtre post-envoi : proposition FACULTATIVE de prendre rendez-vous.
+    Le créneau choisi sur le Google Agenda reste soumis à validation par Tchil. */
+function BookingModal({ open, onClose }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, onClose]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-[#04121c]/80 px-5 backdrop-blur-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          onClick={onClose}
+        >
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Demande envoyée — prendre rendez-vous"
+            className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white p-8 text-center shadow-[0_40px_120px_rgba(0,0,0,0.45)] md:p-10"
+            initial={{ opacity: 0, y: 40, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.94 }}
+            transition={{ type: "spring", bounce: 0.22, duration: 0.5 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-tchil/25 blur-3xl"
+              aria-hidden="true"
+            />
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Fermer la fenêtre"
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-noir/10 text-noir/60 transition-colors hover:border-noir/30 hover:text-noir"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-tchil/10">
+              <CheckCircle2 className="h-7 w-7 text-tchil" strokeWidth={1.8} />
+            </span>
+            <h3 className="font-asap mt-5 text-2xl font-extrabold tracking-tight text-noir">
+              Demande bien envoyée !
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-noir/60">
+              Merci pour votre intérêt. Si vous le souhaitez, vous pouvez dès
+              maintenant réserver un créneau pour échanger avec l'équipe Tchil —
+              c'est facultatif, et la demande de rendez-vous reste soumise à
+              validation par Tchil.
+            </p>
+            <a
+              href={BOOKING_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="group mt-6 flex w-full items-center justify-center gap-2.5 rounded-full bg-tchil py-3.5 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.02] hover:bg-noir"
+            >
+              <CalendarCheck className="h-4 w-4" /> Prendre rendez-vous
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </a>
+            <button
+              type="button"
+              onClick={onClose}
+              className="mt-3 w-full rounded-full border border-noir/15 py-3.5 text-sm font-semibold text-noir/70 transition-colors duration-200 hover:border-noir/40 hover:text-noir"
+            >
+              Plus tard
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export function PartnerForm() {
   const [categorie, setCategorie] = useState("");
   const [categorieError, setCategorieError] = useState(false);
-  // idle | sending | sent | error
+  // idle | sent
   const [status, setStatus] = useState("idle");
+  const [modalOpen, setModalOpen] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -109,35 +203,10 @@ export function PartnerForm() {
       return;
     }
 
-    const form = e.target;
-    const data = Object.fromEntries(new FormData(form).entries());
-    setStatus("sending");
-    try {
-      const res = await fetch(FORMSUBMIT_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          _subject: `Demande partenaire Tchil — ${data.etablissement} (${categorie})`,
-          _template: "table",
-          Catégorie: categorie,
-          "Nom de l'établissement": data.etablissement,
-          "Responsable / contact": data.contact,
-          "E-mail": data.email,
-          Téléphone: data.telephone,
-          Adresse: data.adresse,
-          "Code postal": data.codePostal,
-          Ville: data.ville,
-          "Raison sociale": data.raisonSociale,
-          "Site internet": data.site || "—",
-          "Réseaux sociaux": data.reseaux || "—",
-          "Commentaire / demande": data.commentaire || "—",
-        }),
-      });
-      if (!res.ok) throw new Error(`FormSubmit ${res.status}`);
-      setStatus("sent");
-    } catch {
-      setStatus("error");
-    }
+    const data = Object.fromEntries(new FormData(e.target).entries());
+    await sendPartnerRequest({ categorie, ...data });
+    setStatus("sent");
+    setModalOpen(true);
   };
 
   return (
@@ -226,6 +295,20 @@ export function PartnerForm() {
                     Merci pour votre intérêt. L'équipe Tchil étudie votre demande et
                     revient vers vous rapidement pour préparer l'intégration de votre
                     établissement.
+                  </p>
+                  {/* Prise de rendez-vous accessible UNIQUEMENT après l'envoi
+                      du formulaire (facultative, soumise à validation) */}
+                  <a
+                    href={BOOKING_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group mt-7 flex items-center gap-2.5 rounded-full bg-tchil py-3 pl-6 pr-5 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:bg-noir"
+                  >
+                    <CalendarCheck className="h-4 w-4" /> Prendre rendez-vous
+                    <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                  </a>
+                  <p className="mt-3 text-xs text-noir/40">
+                    Facultatif — la demande de rendez-vous reste soumise à validation par Tchil.
                   </p>
                 </div>
               ) : (
@@ -354,35 +437,17 @@ export function PartnerForm() {
                     </div>
                   </div>
 
-                  {status === "error" && (
-                    <div className="mt-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-                      <MailWarning className="mt-0.5 h-4 w-4 shrink-0" />
-                      <p>
-                        L'envoi a échoué. Réessayez dans un instant, ou écrivez-nous directement à{" "}
-                        <a href="mailto:contact@tchil.app" className="font-semibold underline">
-                          contact@tchil.app
-                        </a>
-                        .
-                      </p>
-                    </div>
-                  )}
-
                   <div className="mt-9 flex flex-col items-center gap-4 border-t border-noir/10 pt-6 md:flex-row md:justify-between">
                     <p className="text-xs leading-relaxed text-noir/45">
                       <span className="text-tchil">*</span> Champs obligatoires.
                     </p>
                     <button
                       type="submit"
-                      disabled={status === "sending"}
-                      className="group flex shrink-0 items-center gap-2.5 rounded-full bg-noir py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] disabled:pointer-events-none disabled:opacity-60"
+                      className="group flex shrink-0 items-center gap-2.5 rounded-full bg-noir py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03]"
                     >
-                      {status === "sending" ? "Envoi en cours…" : "Envoyer ma demande"}
+                      Envoyer ma demande
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-tchil text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
-                        {status === "sending" ? (
-                          <LoaderCircle className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <ArrowRight className="h-4 w-4" />
-                        )}
+                        <ArrowRight className="h-4 w-4" />
                       </span>
                     </button>
                   </div>
@@ -392,6 +457,8 @@ export function PartnerForm() {
           </div>
         </Reveal>
       </div>
+
+      <BookingModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </section>
   );
 }

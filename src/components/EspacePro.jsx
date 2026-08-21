@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, BarChart3, CalendarCheck, CalendarHeart, Gift, Sparkles, X, ZoomIn } from "lucide-react";
+import { ArrowLeft, ArrowRight, BarChart3, CalendarHeart, Gift, Sparkles, X, ZoomIn } from "lucide-react";
 import { Reveal } from "./ui/Reveal.jsx";
 import { BrowserFrame } from "./ui/PhoneMockup.jsx";
 import { Countdown } from "./ui/Countdown.jsx";
@@ -12,12 +12,14 @@ import { Footer } from "./Footer.jsx";
    établissements vit ici — découverte du concept, avantages du
    partenariat, accès à l'espace partenaire.
    Retours Figma 10/08 : visuel événements dans le hero, message élargi à
-   toute structure recevant du public, bouton « Prendre rendez-vous »
-   (Google Agenda) et tarifs pro — offre de lancement Paris & IDF 2027. */
+   toute structure recevant du public, tarifs pro — offre de lancement
+   Paris & IDF 2027. Retour 21/08 : la prise de rendez-vous (Google Agenda)
+   n'est accessible QU'APRÈS l'envoi du formulaire partenaire — aucun bouton
+   « Prendre rendez-vous » ailleurs sur la page, les CTA renvoient au
+   formulaire (#devenir-partenaire, voir PartnerForm.jsx). */
 
-/* TODO : remplacer par le lien public de prise de rendez-vous
-   du Google Agenda de la cliente (Google Calendar → rendez-vous). */
-const GOOGLE_AGENDA_URL = "https://calendar.app.google/";
+const scrollToForm = () =>
+  document.getElementById("devenir-partenaire")?.scrollIntoView({ behavior: "smooth" });
 
 const TARIFS = [
   { name: "Start", prix: "29,90", ancien: "49,90" },
@@ -190,9 +192,7 @@ export function EspacePro() {
                   changer le hash casserait le routing #/espace-pro) */}
               <button
                 type="button"
-                onClick={() =>
-                  document.getElementById("devenir-partenaire")?.scrollIntoView({ behavior: "smooth" })
-                }
+                onClick={scrollToForm}
                 className="group flex items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir shadow-[0_14px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-[1.03]"
               >
                 Devenir partenaire
@@ -266,8 +266,8 @@ export function EspacePro() {
               ))}
             </div>
 
-            {/* Demande de rendez-vous — bars, restaurants et toute structure
-                recevant du public, créneau à réserver sur le Google Agenda */}
+            {/* Invitation à remplir le formulaire partenaire — la prise de
+                rendez-vous n'est proposée qu'après l'envoi (retour 21/08) */}
             <Reveal className="mt-16">
               <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-noir/10 bg-white p-8 text-center shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:flex-row md:p-10 md:text-left">
                 <div className="flex items-start gap-4">
@@ -277,17 +277,17 @@ export function EspacePro() {
                     <span className="font-semibold text-tchil">
                       vous souhaitez devenir un lieu Tchil et apparaître sur la carte de l'application ?
                     </span>{" "}
-                    Réservez un créneau pour échanger sur le partenariat et les modalités pour rejoindre Tchil.
+                    Présentez-nous votre établissement via le formulaire partenaire, nous revenons
+                    vers vous rapidement.
                   </p>
                 </div>
-                <a
-                  href={GOOGLE_AGENDA_URL}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  onClick={scrollToForm}
                   className="flex shrink-0 items-center gap-2 rounded-full bg-tchil px-7 py-3.5 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:bg-noir"
                 >
-                  <CalendarCheck className="h-4 w-4" /> Prendre rendez-vous
-                </a>
+                  Devenir partenaire <ArrowRight className="h-4 w-4" />
+                </button>
               </div>
             </Reveal>
           </div>
@@ -384,17 +384,16 @@ export function EspacePro() {
             </Reveal>
 
             <Reveal className="mt-10 flex flex-col items-center gap-5 text-center">
-              <a
-                href={GOOGLE_AGENDA_URL}
-                target="_blank"
-                rel="noreferrer"
+              <button
+                type="button"
+                onClick={scrollToForm}
                 className="group flex items-center gap-2.5 rounded-full bg-noir py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03]"
               >
-                <CalendarCheck className="h-4 w-4" /> Prendre rendez-vous
+                Devenir partenaire
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-tchil text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
                   <ArrowRight className="h-4 w-4" />
                 </span>
-              </a>
+              </button>
               <div className="max-w-2xl space-y-1 text-xs leading-relaxed text-noir/45">
                 <p>
                   Après 2027, les tarifs standards s'appliquent : de 49,90 € à 89,90 €/mois
