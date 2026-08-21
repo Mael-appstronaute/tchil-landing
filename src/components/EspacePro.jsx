@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, BarChart3, CalendarCheck, CalendarHeart, Gift, S
 import { Reveal } from "./ui/Reveal.jsx";
 import { BrowserFrame } from "./ui/PhoneMockup.jsx";
 import { Countdown } from "./ui/Countdown.jsx";
+import { PartnerForm } from "./PartnerForm.jsx";
 import { Footer } from "./Footer.jsx";
 
 /* Page dédiée aux professionnels (retours client #57, #59 et #61) :
@@ -185,15 +186,20 @@ export function EspacePro() {
               </p>
             </Reveal>
             <Reveal delay={0.3} className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href="mailto:contact@tchil.app?subject=Devenir%20%C3%A9tablissement%20partenaire%20Tchil"
+              {/* Scroll vers le formulaire partenaire — bouton (pas d'ancre href :
+                  changer le hash casserait le routing #/espace-pro) */}
+              <button
+                type="button"
+                onClick={() =>
+                  document.getElementById("devenir-partenaire")?.scrollIntoView({ behavior: "smooth" })
+                }
                 className="group flex items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir shadow-[0_14px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-[1.03]"
               >
                 Devenir partenaire
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-noir text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
                   <ArrowRight className="h-4 w-4" />
                 </span>
-              </a>
+              </button>
               <a
                 href="https://pro.tchil.app"
                 target="_blank"
@@ -402,6 +408,9 @@ export function EspacePro() {
             </Reveal>
           </div>
         </section>
+
+        {/* Formulaire de prise de contact professionnel (retour client 21/08) */}
+        <PartnerForm />
       </main>
 
       <ProScreenLightbox index={zoom} onClose={() => setZoom(null)} />
