@@ -10,7 +10,9 @@ import {
   Coffee,
   Dumbbell,
   Flower2,
+  LoaderCircle,
   Mail,
+  MailWarning,
   Martini,
   Beer,
   Scissors,
@@ -32,14 +34,43 @@ import { Reveal } from "./ui/Reveal.jsx";
    à validation). Ce bouton de prise de rendez-vous n'existe NULLE PART
    ailleurs : il n'apparaît qu'une fois le formulaire complété et envoyé.
 
-   TODO Brevo : l'envoi des informations par e-mail sera branché par la
-   cliente via Brevo — voir sendPartnerRequest() ci-dessous. */
+   Envoi par e-mail via FormSubmit (https://formsubmit.co) — gratuit, sans
+   backend ni compte. IMPORTANT : à la toute première soumission depuis le
+   domaine, FormSubmit envoie un e-mail d'activation au destinataire — il
+   faut cliquer le lien de confirmation une fois pour recevoir les demandes
+   suivantes (à refaire si le domaine du site change). */
 const BOOKING_URL = "https://calendar.app.google/MyGRypvYDJkWiwDc7";
 
-/** Payload de la demande, prêt à brancher sur Brevo (aucun envoi pour l'instant). */
-async function sendPartnerRequest(payload) {
-  // TODO Brevo : envoyer `payload` (API Brevo / formulaire Brevo) — géré par la cliente.
-  void payload;
+/* Adresse qui reçoit les demandes de partenariat. */
+const DESTINATAIRE = "contact@tchil.app";
+
+/** Envoie la demande par e-mail via FormSubmit (AJAX, réponse JSON). */
+async function sendPartnerRequest({ categorie, ...data }) {
+  const res = await fetch(`https://formsubmit.co/ajax/${DESTINATAIRE}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      _subject: `Demande partenaire Tchil — ${data.etablissement} (${categorie})`,
+      _template: "table",
+      Catégorie: categorie,
+      "Nom de l'établissement": data.etablissement,
+      "Responsable / contact": data.contact,
+      "E-mail": data.email,
+      Téléphone: data.telephone,
+      Adresse: data.adresse,
+      "Code postal": data.codePostal,
+      Ville: data.ville,
+      "Raison sociale": data.raisonSociale,
+      "Site internet": data.site || "—",
+      "Réseaux sociaux": data.reseaux || "—",
+      "Commentaire / demande": data.commentaire || "—",
+    }),
+  });
+  if (!res.ok) throw new Error(`FormSubmit ${res.status}`);
+  /* FormSubmit répond 200 même en échec (ex. adresse pas encore activée,
+     avec success: "false") — on vérifie donc le corps de la réponse. */
+  const body = await res.json();
+  if (String(body.success) !== "true") throw new Error(body.message || "FormSubmit refused");
 }
 
 const CATEGORIES = [
@@ -191,7 +222,7 @@ function BookingModal({ open, onClose }) {
 export function PartnerForm() {
   const [categorie, setCategorie] = useState("");
   const [categorieError, setCategorieError] = useState(false);
-  // idle | sent
+  // idle | sending | sent | error
   const [status, setStatus] = useState("idle");
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -204,9 +235,14 @@ export function PartnerForm() {
     }
 
     const data = Object.fromEntries(new FormData(e.target).entries());
-    await sendPartnerRequest({ categorie, ...data });
-    setStatus("sent");
-    setModalOpen(true);
+    setStatus("sending");
+    try {
+      await sendPartnerRequest({ categorie, ...data });
+      setStatus("sent");
+      setModalOpen(true);
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -437,17 +473,35 @@ export function PartnerForm() {
                     </div>
                   </div>
 
+                  {status === "error" && (
+                    <div className="mt-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                      <MailWarning className="mt-0.5 h-4 w-4 shrink-0" />
+                      <p>
+                        L'envoi a échoué. Réessayez dans un instant, ou écrivez-nous directement à{" "}
+                        <a href={`mailto:${DESTINATAIRE}`} className="font-semibold underline">
+                          {DESTINATAIRE}
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  )}
+
                   <div className="mt-9 flex flex-col items-center gap-4 border-t border-noir/10 pt-6 md:flex-row md:justify-between">
                     <p className="text-xs leading-relaxed text-noir/45">
                       <span className="text-tchil">*</span> Champs obligatoires.
                     </p>
                     <button
                       type="submit"
-                      className="group flex shrink-0 items-center gap-2.5 rounded-full bg-noir py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03]"
+                      disabled={status === "sending"}
+                      className="group flex shrink-0 items-center gap-2.5 rounded-full bg-noir py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] disabled:pointer-events-none disabled:opacity-60"
                     >
-                      Envoyer ma demande
+                      {status === "sending" ? "Envoi en cours…" : "Envoyer ma demande"}
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-tchil text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
-                        <ArrowRight className="h-4 w-4" />
+                        {status === "sending" ? (
+                          <LoaderCircle className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <ArrowRight className="h-4 w-4" />
+                        )}
                       </span>
                     </button>
                   </div>
