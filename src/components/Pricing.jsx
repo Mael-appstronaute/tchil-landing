@@ -32,10 +32,11 @@ export function Pricing() {
             />
             <div className="relative grid gap-10 p-8 md:grid-cols-2 md:gap-6 md:p-12">
               <div>
-                {/* Retour client 12/08 : pas de promesse « pour toujours » —
-                    on met simplement en avant la gratuité de l'essentiel. */}
+                {/* Retours client 12/08 + 21/08 : aucune promesse forte ou définitive
+                    sur la gratuité (ni « pour toujours », ni « sans carte bancaire ») —
+                    on reprend la formulation exacte de la cliente. */}
                 <h3 className="font-asap text-2xl font-extrabold leading-tight tracking-tight text-balance md:text-4xl">
-                  L'essentiel de Tchil, sans carte bancaire.
+                  L'essentiel de Tchil, proposé gratuitement.
                 </h3>
                 <ul className="mt-6 space-y-3">
                   {FREE_FEATURES.map((f) => (
