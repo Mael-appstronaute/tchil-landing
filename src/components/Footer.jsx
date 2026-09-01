@@ -1,9 +1,8 @@
 import { Mail, Globe } from "lucide-react";
 
 const NAV = [
-  { label: "Le concept", href: "#concept" },
+  { label: "Concept", href: "#concept" },
   { label: "Fonctionnalités", href: "#fonctionnalites" },
-  { label: "Gratuit", href: "#gratuit" },
 ];
 
 /* Retour client 10/08 : icônes réseaux sociaux dans leurs couleurs officielles. */

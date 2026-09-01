@@ -3,9 +3,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const LINKS = [
-  { label: "Le concept", href: "#concept" },
+  { label: "Concept", href: "#concept" },
   { label: "Fonctionnalités", href: "#fonctionnalites" },
-  { label: "Gratuit", href: "#gratuit" },
 ];
 
 /** Header fixe (retour client 10/08) : transparent sur le hero, fond bleu nuit

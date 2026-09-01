@@ -114,10 +114,10 @@ export function Pricing() {
                   chaque check-in en client fidèle.
                 </p>
                 <a
-                  href="#cta"
+                  href="#/espace-pro"
                   className="group mt-7 inline-flex items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir shadow-[0_14px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-[1.03]"
                 >
-                  Demander une invitation
+                  Accéder à l'espace Pro
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-noir text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
                     <ArrowRight className="h-4 w-4" />
                   </span>
