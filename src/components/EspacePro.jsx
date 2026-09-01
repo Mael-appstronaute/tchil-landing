@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, BarChart3, CalendarHeart, Gift, Sparkles, X, ZoomIn } from "lucide-react";
+import { ArrowLeft, ArrowRight, BarChart3, CalendarHeart, Download, FileText, Gift, Sparkles, X, ZoomIn } from "lucide-react";
 import { Reveal } from "./ui/Reveal.jsx";
 import { BrowserFrame } from "./ui/PhoneMockup.jsx";
 import { Countdown } from "./ui/Countdown.jsx";
@@ -99,6 +99,75 @@ function ProScreenLightbox({ index, onClose }) {
   );
 }
 
+const FLYER_PDF = "/docs/tchil-pro-flyer.pdf";
+
+/** Modale « En savoir plus » : le flyer pro affiché dans la page + téléchargement. */
+function FlyerModal({ open, onClose }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, onClose]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-[#04121c]/90 px-4 py-6 backdrop-blur-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          onClick={onClose}
+        >
+          <motion.div
+            className="flex h-[min(88vh,1000px)] w-[min(94vw,900px)] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_60px_160px_rgba(0,0,0,0.6)]"
+            initial={{ opacity: 0, y: 40, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.96 }}
+            transition={{ type: "spring", bounce: 0.22, duration: 0.5 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-3 border-b border-noir/10 px-4 py-3 md:px-6">
+              <p className="font-asap flex min-w-0 items-center gap-2 text-sm font-bold text-noir md:text-base">
+                <FileText className="h-4 w-4 shrink-0 text-tchil" />
+                <span className="truncate">Tchil Pro — en savoir plus</span>
+              </p>
+              <div className="flex shrink-0 items-center gap-2">
+                <a
+                  href={FLYER_PDF}
+                  download="Tchil-Pro.pdf"
+                  className="flex items-center gap-2 rounded-full bg-tchil px-4 py-2 text-xs font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:bg-noir md:text-sm"
+                >
+                  <Download className="h-4 w-4" /> Télécharger
+                </a>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Fermer le document"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-noir/15 text-noir transition-colors hover:border-noir"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            <iframe
+              src={`${FLYER_PDF}#toolbar=0&view=FitH`}
+              title="Flyer Tchil Pro"
+              className="h-full w-full flex-1 bg-[#f4f6f8]"
+            />
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 const POINTS = [
   {
     Icon: BarChart3,
@@ -119,6 +188,7 @@ const POINTS = [
 
 export function EspacePro() {
   const [zoom, setZoom] = useState(null);
+  const [flyerOpen, setFlyerOpen] = useState(false);
 
   return (
     <>
@@ -238,6 +308,20 @@ export function EspacePro() {
                 </button>
               </div>
             ))}
+          </Reveal>
+
+          {/* Flyer pro consultable + téléchargeable en modale */}
+          <Reveal delay={0.55} className="relative z-10 mt-14 flex justify-center md:mt-20">
+            <button
+              type="button"
+              onClick={() => setFlyerOpen(true)}
+              className="group flex items-center gap-2.5 rounded-full border border-blanc/40 py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:border-blanc"
+            >
+              En savoir plus
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blanc text-noir transition-transform duration-200 group-hover:translate-x-0.5">
+                <FileText className="h-4 w-4" />
+              </span>
+            </button>
           </Reveal>
         </section>
 
@@ -413,6 +497,7 @@ export function EspacePro() {
       </main>
 
       <ProScreenLightbox index={zoom} onClose={() => setZoom(null)} />
+      <FlyerModal open={flyerOpen} onClose={() => setFlyerOpen(false)} />
 
       <Footer />
     </>

@@ -292,7 +292,7 @@ export function Hero() {
         >
           Tchil connecte les personnes présentes au même endroit, au même moment.
           <br className="hidden md:block" /> Un scan, une rencontre, des souvenirs — sans swipe,
-          sans profils fantômes.
+          profils 100 % vérifiés.
         </motion.p>
 
         <motion.div
