@@ -7,7 +7,7 @@
     <title>Tchil — La rencontre commence ici</title>
     <meta
       name="description"
-      content="Tchil connecte les personnes présentes au même endroit, au même moment. Scannez le QR code d'un lieu partenaire, voyez qui est là et rencontrez-vous en vrai — sans swipe, sans profils fantômes."
+      content="Tchil connecte les personnes présentes au même endroit, au même moment. Scannez le QR code d'un lieu partenaire, voyez qui est là et rencontrez-vous en vrai — sans swipe, profils 100 % vérifiés."
     />
     <meta property="og:title" content="Tchil — La rencontre commence ici" />
     <meta
@@ -23,6 +23,12 @@
       href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,400..800;1,400..800&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <style>
+      /* premier rendu noir avant le montage de React (écran d'intro) */
+      body:has(#root:empty) {
+        background: #000000;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

@@ -21,10 +21,12 @@ import { Footer } from "./Footer.jsx";
 const scrollToForm = () =>
   document.getElementById("devenir-partenaire")?.scrollIntoView({ behavior: "smooth" });
 
+/* Retour client 01/09 : plus aucun prix affiché — les tarifs se demandent
+   via le formulaire partenaire. */
 const TARIFS = [
-  { name: "Start", prix: "29,90", ancien: "49,90" },
-  { name: "Plus", prix: "39,90", ancien: "69,90", accent: true },
-  { name: "Premium", prix: "49,90", ancien: "89,90" },
+  { name: "Start" },
+  { name: "Plus", accent: true },
+  { name: "Premium" },
 ];
 
 /* Écrans du back-office présentés dans le hero — cliquables pour un
@@ -417,15 +419,12 @@ export function EspacePro() {
                       {t.name}
                     </span>
                     <div className="mt-5 flex items-baseline gap-2">
-                      <span className="font-asap text-4xl font-extrabold tracking-tight">
-                        {t.prix} €
-                      </span>
-                      <span className={`text-sm ${t.accent ? "text-blanc/60" : "text-noir/50"}`}>
-                        /mois
+                      <span className="font-asap text-3xl font-extrabold tracking-tight md:text-4xl">
+                        Sur demande
                       </span>
                     </div>
                     <p className={`mt-1 text-sm ${t.accent ? "text-blanc/60" : "text-noir/50"}`}>
-                      au lieu de <span className="line-through">{t.ancien} €/mois</span>
+                      tarif de lancement réduit
                     </p>
                     <span
                       className={`mt-5 flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold ${
@@ -473,15 +472,14 @@ export function EspacePro() {
                 onClick={scrollToForm}
                 className="group flex items-center gap-2.5 rounded-full bg-noir py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03]"
               >
-                Devenir partenaire
+                Demander les tarifs
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-tchil text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
                   <ArrowRight className="h-4 w-4" />
                 </span>
               </button>
               <div className="max-w-2xl space-y-1 text-xs leading-relaxed text-noir/45">
                 <p>
-                  Après 2027, les tarifs standards s'appliquent : de 49,90 € à 89,90 €/mois
-                  selon la formule choisie.
+                  Après 2027, les tarifs standards s'appliquent selon la formule choisie.
                 </p>
                 <p>
                   Le déploiement national de Tchil est prévu progressivement au cours de
