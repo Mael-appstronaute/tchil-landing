@@ -101,6 +101,26 @@ body {
   animation-play-state: paused;
 }
 
+/* Bulle du chatbot Limova (iframe injectée par chatbot-loader.js, z-index
+   inline 1000) : recalée à 55 pour rester SOUS l'intro rideau (z-200), les
+   modales/lightbox (z-80) et le menu mobile (z-60), mais AU-DESSUS du header
+   (z-50) — nécessaire quand le chat passe plein écran sur mobile. Apparition
+   en fondu une fois l'intro levée. */
+iframe[src*="limova-web-sltj.onrender.com/embededChatbot"] {
+  z-index: 55 !important;
+  animation: chatbot-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 2.8s backwards;
+}
+@keyframes chatbot-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
