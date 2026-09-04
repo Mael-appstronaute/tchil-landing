@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, BarChart3, CalendarHeart, Download, FileText, Gift, Sparkles, X, ZoomIn } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgePercent, BarChart3, CalendarHeart, Download, FileText, Gift, Sparkles, X, ZoomIn } from "lucide-react";
 import { Reveal } from "./ui/Reveal.jsx";
 import { BrowserFrame } from "./ui/PhoneMockup.jsx";
 import { Countdown } from "./ui/Countdown.jsx";
@@ -22,12 +22,9 @@ const scrollToForm = () =>
   document.getElementById("devenir-partenaire")?.scrollIntoView({ behavior: "smooth" });
 
 /* Retour client 01/09 : plus aucun prix affiché — les tarifs se demandent
-   via le formulaire partenaire. */
-const TARIFS = [
-  { name: "Start" },
-  { name: "Plus", accent: true },
-  { name: "Premium" },
-];
+   via le formulaire partenaire. Retour 03/09 : la section était trop
+   répétitive (3 cartes identiques), condensée en un panneau unique. */
+const FORMULES = ["Start", "Plus", "Premium"];
 
 /* Écrans du back-office présentés dans le hero — cliquables pour un
    agrandissement plein écran (retour client 12/08 : écrans en grand format). */
@@ -312,16 +309,31 @@ export function EspacePro() {
             ))}
           </Reveal>
 
-          {/* Flyer pro consultable + téléchargeable en modale */}
+          {/* Flyer pro consultable + téléchargeable en modale — retour client
+              03/09 : le bouton ghost passait inaperçu, on le remplace par un
+              encart dédié avec un CTA plein bien identifiable. */}
           <Reveal delay={0.55} className="relative z-10 mt-14 flex justify-center md:mt-20">
             <button
               type="button"
               onClick={() => setFlyerOpen(true)}
-              className="group flex items-center gap-2.5 rounded-full border border-blanc/40 py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:border-blanc"
+              className="group flex w-full max-w-2xl flex-col items-center gap-5 rounded-3xl border border-blanc/20 bg-blanc/10 p-7 text-center backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-blanc/40 hover:bg-blanc/15 sm:flex-row sm:p-8 sm:text-left"
             >
-              En savoir plus
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blanc text-noir transition-transform duration-200 group-hover:translate-x-0.5">
-                <FileText className="h-4 w-4" />
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blanc text-tchil shadow-[0_14px_40px_rgba(0,0,0,0.35)]">
+                <FileText className="h-6 w-6" strokeWidth={1.8} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="font-asap block text-lg font-extrabold text-blanc">
+                  Envie d'en savoir plus sur Tchil Pro ?
+                </span>
+                <span className="mt-1 block text-sm leading-relaxed text-blanc/75">
+                  Tout le concept résumé en une page, à consulter et à télécharger.
+                </span>
+              </span>
+              <span className="flex shrink-0 items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir shadow-[0_14px_40px_rgba(0,0,0,0.35)] transition-transform duration-200 group-hover:scale-[1.04]">
+                Voir la présentation
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-noir text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
+                  <ArrowRight className="h-4 w-4" />
+                </span>
               </span>
             </button>
           </Reveal>
@@ -379,12 +391,12 @@ export function EspacePro() {
           </div>
         </section>
 
-        {/* Tarifs pro — offre de lancement Paris & Île-de-France, valable toute
-            l'année 2027 : tarifs réduits, 6 mois offerts sur 12 d'engagement,
-            remises fidélité 2 et 3 ans. Tarifs standards de retour après 2027. */}
+        {/* Tarifs pro — offre de lancement Paris & Île-de-France 2027,
+            condensée en un seul panneau (retour client 03/09 : moins de
+            répétition) : chaque condition n'est écrite qu'une fois. */}
         <section id="tarifs-pro" className="bg-[#f4f6f8] px-5 py-20 md:py-28">
-          <div className="mx-auto max-w-6xl">
-            <Reveal className="mx-auto mb-4 flex max-w-3xl flex-col items-center text-center">
+          <div className="mx-auto max-w-4xl">
+            <Reveal className="mx-auto mb-12 flex max-w-3xl flex-col items-center text-center">
               <span className="flex w-fit items-center gap-1.5 rounded-full border border-tchil/40 bg-tchil/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-tchil">
                 <Sparkles className="h-3 w-3" strokeWidth={2.5} />
                 Offre de lancement · Paris &amp; Île-de-France
@@ -393,99 +405,86 @@ export function EspacePro() {
                 Tarifs professionnels 2027
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-noir/60">
-                Pendant toute l'année 2027, les lieux de Paris &amp; Île-de-France profitent
-                de tarifs de lancement réduits. Quelle que soit la formule :{" "}
-                <span className="font-semibold text-noir">
-                  engagement de 12 mois, dont 6 mois offerts.
-                </span>
+                Trois formules pensées pour tous les établissements, à tarif de
+                lancement réduit pendant toute l'année 2027.
               </p>
             </Reveal>
 
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {TARIFS.map((t) => (
-                <Reveal key={t.name}>
-                  <div
-                    className={`relative flex h-full flex-col rounded-3xl p-8 ${
-                      t.accent
-                        ? "bg-noir text-blanc shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
-                        : "border border-noir/10 bg-white text-noir shadow-[0_10px_40px_rgba(23,53,75,0.08)]"
-                    }`}
-                  >
-                    <span
-                      className={`font-asap text-xs font-bold uppercase tracking-[0.18em] ${
-                        t.accent ? "text-tchil" : "text-noir/50"
-                      }`}
+            <Reveal>
+              <div className="relative overflow-hidden rounded-3xl bg-noir text-blanc shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+                <div
+                  className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-tchil/35 blur-[90px]"
+                  aria-hidden="true"
+                />
+                <div className="relative grid gap-10 p-8 md:grid-cols-[1fr_auto] md:items-center md:gap-12 md:p-12">
+                  <div>
+                    <div className="flex flex-wrap gap-2">
+                      {FORMULES.map((f) => (
+                        <span
+                          key={f}
+                          className="font-asap rounded-full border border-blanc/20 bg-blanc/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-blanc"
+                        >
+                          {f}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="font-asap mt-6 text-3xl font-extrabold tracking-tight md:text-4xl">
+                      Sur demande
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-blanc/60">
+                      Présentez-nous votre établissement, nous vous envoyons la
+                      formule et le tarif adaptés.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={scrollToForm}
+                      className="group mt-7 flex items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir transition-all duration-200 hover:scale-[1.03]"
                     >
-                      {t.name}
-                    </span>
-                    <div className="mt-5 flex items-baseline gap-2">
-                      <span className="font-asap text-3xl font-extrabold tracking-tight md:text-4xl">
-                        Sur demande
+                      Demander les tarifs
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-noir text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
+                        <ArrowRight className="h-4 w-4" />
                       </span>
-                    </div>
-                    <p className={`mt-1 text-sm ${t.accent ? "text-blanc/60" : "text-noir/50"}`}>
-                      tarif de lancement réduit
-                    </p>
-                    <span
-                      className={`mt-5 flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold ${
-                        t.accent ? "bg-tchil/20 text-tchil" : "bg-tchil/10 text-tchil"
-                      }`}
-                    >
-                      <Gift className="h-3 w-3" strokeWidth={2.5} />
-                      6 mois offerts
-                    </span>
-                    <p className={`mt-4 text-xs leading-relaxed ${t.accent ? "text-blanc/50" : "text-noir/45"}`}>
-                      Tarif de lancement valable toute l'année 2027 — engagement de 12 mois,
-                      dont 6 mois offerts.
-                    </p>
+                    </button>
                   </div>
-                </Reveal>
-              ))}
-            </div>
 
-            {/* Remises selon la durée d'engagement */}
-            <Reveal className="mt-6">
-              <div className="grid gap-6 md:grid-cols-2">
-                {[
-                  { duree: "Engagement 2 ans", remise: "−10 %" },
-                  { duree: "Engagement 3 ans", remise: "−20 %" },
-                ].map((e) => (
-                  <div
-                    key={e.duree}
-                    className="flex items-center justify-between gap-4 rounded-3xl border border-noir/10 bg-white p-6 shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:p-7"
-                  >
-                    <div>
-                      <p className="font-asap text-lg font-bold text-noir">{e.duree}</p>
-                      <p className="mt-0.5 text-sm text-noir/55">sur la totalité de l'engagement</p>
-                    </div>
-                    <span className="font-asap shrink-0 rounded-2xl bg-tchil/10 px-4 py-2.5 text-2xl font-extrabold text-tchil">
-                      {e.remise}
-                    </span>
-                  </div>
-                ))}
+                  <ul className="space-y-5 md:max-w-xs">
+                    {[
+                      {
+                        Icon: Gift,
+                        title: "6 mois offerts",
+                        text: "sur l'engagement de 12 mois",
+                      },
+                      {
+                        Icon: BadgePercent,
+                        title: "−10 % ou −20 %",
+                        text: "en vous engageant 2 ou 3 ans",
+                      },
+                      {
+                        Icon: Sparkles,
+                        title: "Tarif de lancement",
+                        text: "valable toute l'année 2027",
+                      },
+                    ].map((a) => (
+                      <li key={a.title} className="flex items-start gap-3.5">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tchil/15 text-tchil">
+                          <a.Icon className="h-4.5 w-4.5" strokeWidth={2} />
+                        </span>
+                        <span>
+                          <span className="font-asap block font-bold">{a.title}</span>
+                          <span className="mt-0.5 block text-sm text-blanc/60">{a.text}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </Reveal>
 
-            <Reveal className="mt-10 flex flex-col items-center gap-5 text-center">
-              <button
-                type="button"
-                onClick={scrollToForm}
-                className="group flex items-center gap-2.5 rounded-full bg-noir py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03]"
-              >
-                Demander les tarifs
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-tchil text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </button>
-              <div className="max-w-2xl space-y-1 text-xs leading-relaxed text-noir/45">
-                <p>
-                  Après 2027, les tarifs standards s'appliquent selon la formule choisie.
-                </p>
-                <p>
-                  Le déploiement national de Tchil est prévu progressivement au cours de
-                  l'année 2027.
-                </p>
-              </div>
+            <Reveal className="mt-6">
+              <p className="text-center text-xs leading-relaxed text-noir/45">
+                Déploiement national progressif au cours de l'année 2027 — tarifs
+                standards après cette date.
+              </p>
             </Reveal>
           </div>
         </section>

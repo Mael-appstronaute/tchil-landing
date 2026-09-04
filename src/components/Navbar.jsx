@@ -28,6 +28,7 @@ export function Navbar() {
   }, []);
 
   return (
+    <>
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
@@ -75,11 +76,17 @@ export function Navbar() {
           </button>
         </div>
       </nav>
+    </header>
 
+      {/* Panneau mobile rendu HORS du <header> : le backdrop-blur du header
+          scrollé en fait le bloc conteneur des descendants `fixed`, ce qui
+          limitait le fond noir du menu à la hauteur du header (menu illisible
+          sur les sections claires). En frère du header, `inset-0` couvre bien
+          tout le viewport. */}
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-50 flex flex-col bg-noir px-6 py-6"
+            className="fixed inset-0 z-[60] flex flex-col bg-noir px-6 py-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -123,6 +130,6 @@ export function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
