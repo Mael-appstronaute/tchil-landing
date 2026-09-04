@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, BadgePercent, BarChart3, CalendarHeart, Download, FileText, Gift, Sparkles, X, ZoomIn } from "lucide-react";
+import { ArrowLeft, ArrowRight, BarChart3, CalendarHeart, CircleCheck, ClipboardList, Crown, Download, FileText, Gift, Lock, Percent, Rocket, Send, Tag, X, ZoomIn } from "lucide-react";
 import { Reveal } from "./ui/Reveal.jsx";
 import { BrowserFrame } from "./ui/PhoneMockup.jsx";
 import { Countdown } from "./ui/Countdown.jsx";
@@ -22,9 +22,21 @@ const scrollToForm = () =>
   document.getElementById("devenir-partenaire")?.scrollIntoView({ behavior: "smooth" });
 
 /* Retour client 01/09 : plus aucun prix affiché — les tarifs se demandent
-   via le formulaire partenaire. Retour 03/09 : la section était trop
-   répétitive (3 cartes identiques), condensée en un panneau unique. */
-const FORMULES = ["Start", "Plus", "Premium"];
+   via le formulaire partenaire. Retour 03/09 + maquette client 04/09 : la
+   section suit la mise en page du modèle fourni par la cliente (bandeau
+   6 mois offerts, 3 formules à icônes, atouts, engagements, CTA formulaire),
+   transposée dans la charte noir/blanc/bleu. */
+const FORMULES = [
+  { name: "Start", Icon: Send, text: "L'essentiel pour commencer." },
+  { name: "Plus", Icon: Rocket, text: "Plus de visibilité, plus d'impact." },
+  { name: "Premium", Icon: Crown, text: "Le maximum pour performer." },
+];
+
+const ATOUTS = [
+  { lead: "Des fonctionnalités adaptées", rest: "à la taille de votre établissement" },
+  { lead: "Plus de visibilité", rest: "auprès d'une communauté ciblée" },
+  { lead: "Des avantages exclusifs", rest: "à mesure que vous vous engagez" },
+];
 
 /* Écrans du back-office présentés dans le hero — cliquables pour un
    agrandissement plein écran (retour client 12/08 : écrans en grand format). */
@@ -391,92 +403,134 @@ export function EspacePro() {
           </div>
         </section>
 
-        {/* Tarifs pro — offre de lancement Paris & Île-de-France 2027,
-            condensée en un seul panneau (retour client 03/09 : moins de
-            répétition) : chaque condition n'est écrite qu'une fois. */}
+        {/* Tarifs pro — mise en page calquée sur la maquette fournie par la
+            cliente le 04/09 (badge, bandeau 6 mois offerts, séparateur « Nos
+            offres », 3 formules à icônes, atouts, engagements, CTA formulaire),
+            transposée dans la charte noir/blanc/bleu. */}
         <section id="tarifs-pro" className="bg-[#f4f6f8] px-5 py-20 md:py-28">
-          <div className="mx-auto max-w-4xl">
-            <Reveal className="mx-auto mb-12 flex max-w-3xl flex-col items-center text-center">
+          <div className="mx-auto max-w-5xl">
+            <Reveal className="mx-auto flex max-w-3xl flex-col items-center text-center">
               <span className="flex w-fit items-center gap-1.5 rounded-full border border-tchil/40 bg-tchil/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-tchil">
-                <Sparkles className="h-3 w-3" strokeWidth={2.5} />
+                <Tag className="h-3 w-3" strokeWidth={2.5} />
                 Offre de lancement · Paris &amp; Île-de-France
               </span>
               <h2 className="font-asap mt-6 text-3xl font-extrabold tracking-tight text-noir text-balance md:text-5xl">
                 Tarifs professionnels 2027
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-noir/60">
-                Trois formules pensées pour tous les établissements, à tarif de
-                lancement réduit pendant toute l'année 2027.
+                Pendant toute l'année 2027, les lieux de Paris &amp; Île-de-France
+                profitent d'une offre exclusive :{" "}
+                <span className="font-semibold text-tchil">6 mois offerts</span> pour
+                tout engagement.
               </p>
             </Reveal>
 
-            <Reveal>
-              <div className="relative overflow-hidden rounded-3xl bg-noir text-blanc shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
-                <div
-                  className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-tchil/35 blur-[90px]"
-                  aria-hidden="true"
-                />
-                <div className="relative grid gap-10 p-8 md:grid-cols-[1fr_auto] md:items-center md:gap-12 md:p-12">
-                  <div>
-                    <div className="flex flex-wrap gap-2">
-                      {FORMULES.map((f) => (
-                        <span
-                          key={f}
-                          className="font-asap rounded-full border border-blanc/20 bg-blanc/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-blanc"
-                        >
-                          {f}
-                        </span>
-                      ))}
-                    </div>
-                    <p className="font-asap mt-6 text-3xl font-extrabold tracking-tight md:text-4xl">
-                      Sur demande
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-blanc/60">
-                      Présentez-nous votre établissement, nous vous envoyons la
-                      formule et le tarif adaptés.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={scrollToForm}
-                      className="group mt-7 flex items-center gap-2.5 rounded-full bg-blanc py-2 pl-6 pr-2 text-sm font-semibold text-noir transition-all duration-200 hover:scale-[1.03]"
-                    >
-                      Demander les tarifs
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-noir text-blanc transition-transform duration-200 group-hover:translate-x-0.5">
-                        <ArrowRight className="h-4 w-4" />
-                      </span>
-                    </button>
-                  </div>
+            {/* Bandeau 6 mois offerts */}
+            <Reveal className="mt-10">
+              <div className="mx-auto flex max-w-3xl flex-col items-center justify-center gap-2.5 rounded-2xl border border-tchil/30 bg-tchil/10 px-6 py-5 text-center sm:flex-row sm:gap-4">
+                <span className="flex items-center gap-3">
+                  <Gift className="h-6 w-6 text-tchil" strokeWidth={1.8} />
+                  <span className="font-asap text-base font-extrabold uppercase tracking-[0.08em] text-tchil">
+                    6 mois offerts
+                  </span>
+                </span>
+                <span className="hidden h-5 w-px bg-noir/20 sm:block" aria-hidden="true" />
+                <span className="text-sm font-semibold uppercase tracking-[0.06em] text-noir/60">
+                  pour tout engagement souscrit en 2027
+                </span>
+              </div>
+            </Reveal>
 
-                  <ul className="space-y-5 md:max-w-xs">
-                    {[
-                      {
-                        Icon: Gift,
-                        title: "6 mois offerts",
-                        text: "sur l'engagement de 12 mois",
-                      },
-                      {
-                        Icon: BadgePercent,
-                        title: "−10 % ou −20 %",
-                        text: "en vous engageant 2 ou 3 ans",
-                      },
-                      {
-                        Icon: Sparkles,
-                        title: "Tarif de lancement",
-                        text: "valable toute l'année 2027",
-                      },
-                    ].map((a) => (
-                      <li key={a.title} className="flex items-start gap-3.5">
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tchil/15 text-tchil">
-                          <a.Icon className="h-4.5 w-4.5" strokeWidth={2} />
-                        </span>
-                        <span>
-                          <span className="font-asap block font-bold">{a.title}</span>
-                          <span className="mt-0.5 block text-sm text-blanc/60">{a.text}</span>
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+            {/* Séparateur Nos offres */}
+            <Reveal className="mt-12 flex items-center gap-6">
+              <span className="h-px flex-1 bg-noir/10" aria-hidden="true" />
+              <span className="font-asap text-sm font-bold uppercase tracking-[0.3em] text-tchil">
+                Nos offres
+              </span>
+              <span className="h-px flex-1 bg-noir/10" aria-hidden="true" />
+            </Reveal>
+
+            {/* Les 3 formules : icône + nom + accroche */}
+            <Reveal className="mt-10 grid gap-10 md:grid-cols-3 md:gap-6">
+              {FORMULES.map((f) => (
+                <div key={f.name} className="flex flex-col items-center text-center">
+                  <span className="flex items-center gap-3">
+                    <f.Icon className="h-6 w-6 text-tchil" strokeWidth={1.8} />
+                    <span className="font-asap text-2xl font-extrabold uppercase tracking-[0.04em] text-noir">
+                      {f.name}
+                    </span>
+                  </span>
+                  <p className="mt-2 text-sm text-noir/60">{f.text}</p>
+                  <span className="mt-3 h-1 w-10 rounded-full bg-tchil" aria-hidden="true" />
                 </div>
+              ))}
+            </Reveal>
+
+            {/* Bandeau atouts */}
+            <Reveal className="mt-10">
+              <div className="grid divide-y divide-noir/10 rounded-3xl border border-noir/10 bg-white shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:grid-cols-3 md:divide-x md:divide-y-0">
+                {ATOUTS.map((a) => (
+                  <div key={a.lead} className="flex items-start gap-3.5 p-6">
+                    <CircleCheck className="mt-0.5 h-6 w-6 shrink-0 text-tchil" strokeWidth={1.8} />
+                    <p className="text-sm leading-relaxed text-noir/60">
+                      <span className="font-bold text-noir">{a.lead}</span> {a.rest}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+
+            {/* Bandeau engagements */}
+            <Reveal className="mt-6">
+              <div className="grid divide-y divide-noir/10 rounded-3xl border border-noir/10 bg-white shadow-[0_10px_40px_rgba(23,53,75,0.08)] md:grid-cols-2 md:divide-x md:divide-y-0">
+                {[
+                  {
+                    Icon: Percent,
+                    lead: "Engagements avantageux",
+                    rest: "Plus vous vous engagez, plus vous économisez.",
+                  },
+                  {
+                    Icon: Lock,
+                    lead: "Des réductions attractives",
+                    rest: "selon la durée choisie.",
+                  },
+                ].map((e) => (
+                  <div key={e.lead} className="flex items-center gap-4 p-6 md:p-7">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-tchil/10 text-tchil">
+                      <e.Icon className="h-5 w-5" strokeWidth={1.8} />
+                    </span>
+                    <p className="text-sm leading-relaxed text-noir/60">
+                      <span className="block font-bold text-noir">{e.lead}</span> {e.rest}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+
+            {/* CTA : tarif sur demande via le formulaire partenaire */}
+            <Reveal className="mt-6">
+              <div className="flex flex-col items-center gap-6 rounded-3xl border border-tchil/25 bg-tchil/10 p-7 text-center md:flex-row md:p-8 md:text-left">
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-tchil shadow-[0_6px_20px_rgba(23,53,75,0.12)]">
+                  <ClipboardList className="h-6 w-6" strokeWidth={1.8} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-asap text-lg font-extrabold text-tchil md:text-xl">
+                    Tarif sur demande via formulaire
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-noir/60">
+                    Remplissez le formulaire et recevez votre offre personnalisée.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={scrollToForm}
+                  className="group flex shrink-0 items-center gap-2.5 rounded-full bg-tchil py-2 pl-6 pr-2 text-sm font-semibold text-blanc transition-all duration-200 hover:scale-[1.03] hover:bg-noir"
+                >
+                  Demander mon offre
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blanc text-noir transition-transform duration-200 group-hover:translate-x-0.5">
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                </button>
               </div>
             </Reveal>
 
