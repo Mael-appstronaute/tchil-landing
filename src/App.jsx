@@ -10,6 +10,7 @@ import { FinalCTA } from "./components/FinalCTA.jsx";
 import { Footer } from "./components/Footer.jsx";
 import { EspacePro } from "./components/EspacePro.jsx";
 import { Intro } from "./components/Intro.jsx";
+import { ChatbotSkin } from "./components/ChatbotSkin.jsx";
 
 export default function App() {
   const [hash, setHash] = useState(window.location.hash);
@@ -63,6 +64,8 @@ export default function App() {
     <>
       {entered && content}
       <Intro onReveal={() => setEntered(true)} />
+      {/* habillage charte du bouton du chatbot Limova (index.html) */}
+      <ChatbotSkin />
     </>
   );
 }
